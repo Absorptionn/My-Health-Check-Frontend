@@ -91,7 +91,7 @@ async function btn_submit_clicked(e) {
 			experiences: [],
 			is_exposed: false,
 			traveled: { location: "", has_traveled: false },
-			date: `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`,
+			date: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`,
 		};
 
 		assess_checkboxes(assessment);

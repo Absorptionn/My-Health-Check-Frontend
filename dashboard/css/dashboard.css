@@ -143,12 +143,12 @@ body::after {
 	display: flex;
 	flex-flow: column nowrap;
 	width: 100%;
-	padding: .5rem 2.6rem 1rem 3.4rem;
+	padding: 0.5rem 2.6rem 1rem 3.4rem;
 	gap: 1.3rem;
 }
 
 .update-total-form button {
-	margin-top: .8rem !important;
+	margin-top: 0.8rem !important;
 	margin: 0 3.4rem;
 }
 
@@ -420,6 +420,27 @@ main {
 	flex: 1 1 auto;
 }
 
+.ranges {
+	margin-top: 5rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.ranges .months,
+.ranges .weeks {
+	width: 23%;
+	font-size: 1.1rem;
+}
+
+.ranges .weeks-contents span {
+	display: flex;
+	justify-content: space-between;
+}
+
+.ranges .weeks-text #week-range{
+	margin-right: .5rem;
+}
+
 .view {
 	font-family: "Poppins", sans-serif;
 	position: relative;
@@ -471,11 +492,15 @@ main {
 	font-size: 1.2rem;
 }
 
+.months,
+.weeks,
 .dropdown {
 	width: 70%;
 	position: relative;
 }
 
+.months-text,
+.weeks-text,
 .dropdown-text {
 	position: relative;
 	padding: 5px 1rem;
@@ -489,15 +514,23 @@ main {
 	z-index: 4;
 }
 
+.months-text.active,
+.weeks-text.active,
 .dropdown-text.active {
 	box-shadow: 0 4px 3px rgba(128, 128, 128, 0.384);
 }
 
+.months-text span,
+.months-text i,
+.weeks-text span,
+.weeks-text i,
 .dropdown-text span,
 .dropdown-text i {
 	pointer-events: none;
 }
 
+.months-contents,
+.weeks-contents,
 .dropdown-contents {
 	width: 100%;
 	display: flex;
@@ -513,6 +546,8 @@ main {
 	z-index: 3;
 }
 
+.months-contents span,
+.weeks-contents > span,
 .dropdown-contents span {
 	display: flex;
 	align-items: center;
@@ -520,11 +555,15 @@ main {
 	cursor: pointer;
 }
 
+.months-contents span:hover,
+.weeks-contents span:hover,
 .dropdown-contents span:hover {
 	background-color: rgb(92, 92, 255);
 	color: white;
 }
 
+.months-contents.hidden,
+.weeks-contents.hidden,
 .dropdown-contents.hidden {
 	display: none;
 }
@@ -534,7 +573,7 @@ main {
 }
 
 .department .dropdown-contents > div {
-	max-height: 100px;
+	max-height: 180px;
 	overflow: hidden auto;
 }
 
@@ -866,7 +905,7 @@ main {
 	padding: 5% 0;
 }
 
-.bar canvas{
+.bar canvas {
 	margin: 0 8% 0 3%;
 }
 
@@ -883,6 +922,10 @@ main {
 
 .card .header i {
 	transform: translateY(0.5rem);
+}
+
+.card canvas{
+	margin-bottom: 3rem;
 }
 
 .card .description {
