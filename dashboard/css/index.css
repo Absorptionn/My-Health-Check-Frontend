@@ -1,0 +1,190 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,700;0,900;1,200;1,400;1,700;1,900&display=swap");
+
+:root {
+	font-size: 10px;
+}
+
+*,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body,
+html {
+	display: flex;
+	flex-flow: column nowrap;
+	width: 100%;
+	height: 100%;
+}
+
+body::after {
+	position: fixed;
+	content: "";
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	background-color: rgb(0, 0, 56);
+}
+
+.h-center {
+	max-width: 25%;
+	margin: 0 auto;
+}
+
+.overlay {
+	color: black;
+	position: fixed;
+	z-index: 9999;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.582);
+}
+
+.overlay.hidden {
+	display: none;
+}
+
+.overlay > div {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.overlay .card i:first-child {
+	background-color: #000017;
+}
+
+form .form-group i {
+	position: absolute;
+	top: 58%;
+	right: 5%;
+	cursor: pointer;
+	color: gray;
+}
+
+.fa-eye-slash {
+	transform: translateX(1.5px);
+}
+
+main {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.card {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-flow: column nowrap;
+	margin-top: -5rem;
+	width: 100%;
+	height: 45%;
+	background-color: white;
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0 3px 7px black;
+}
+
+.card > div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: -10rem;
+	left: 0;
+	width: 100%;
+}
+
+.card i:first-child {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgb(0, 0, 56);
+	width: 19rem;
+	height: 19rem;
+	border: 20px solid white;
+	border-radius: 100%;
+	font-size: 6.5rem;
+	color: white;
+	transform: translateY(-1px);
+}
+
+form {
+	width: 80%;
+	display: flex;
+	flex-flow: column nowrap;
+	margin-top: 3rem;
+}
+
+form .form-group {
+	position: relative;
+	font-family: "Poppins", sans-serif;
+	font-size: 2.2rem;
+	flex: 1 1 auto;
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 0.3rem;
+	margin-bottom: 4%;
+}
+
+form .form-group label {
+	font-weight: 300;
+	color: black;
+	transform: translateX(1px);
+}
+
+form .text-input:focus,
+form .text-input:active {
+	outline: 0;
+	box-shadow: 0 0 0 0.2rem rgba(25, 0, 255, 0.25);
+}
+
+form .text-input {
+	font-family: "Poppins", sans-serif;
+	color: black;
+	height: 5rem;
+	font-size: 2rem;
+	border: none;
+	border-radius: 5px;
+	padding: 0 1.5rem;
+	background-clip: padding-box;
+	background-color: #f1f1f5;
+}
+
+form .text-input#password,
+form .text-input#admin-password,
+form .text-input#repeat-password {
+	padding-right: 15%;
+}
+
+form button {
+	margin-top: 3rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: "Poppins", sans-serif;
+	font-size: 1.8rem;
+	height: 4rem;
+	padding: 6px 12px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: #2582fc;
+	color: white;
+}
+
+form button[type="submit"]:disabled {
+	cursor: default;
+	background-color: #646464;
+}

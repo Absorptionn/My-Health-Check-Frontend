@@ -1,0 +1,386 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,700;0,900;1,200;1,400;1,700;1,900&display=swap");
+
+:root {
+	font-size: 16px;
+}
+
+*,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body,
+html {
+	display: flex;
+	flex-flow: column nowrap;
+	width: 100%;
+	height: 100%;
+}
+
+a {
+	text-decoration: none;
+	cursor: pointer;
+	color: white;
+}
+
+body::after {
+	position: fixed;
+	content: "";
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	background-color: var(--color-darkblue);
+	background-image: linear-gradient(
+			150deg,
+			rgba(0, 202, 202, 0.767),
+			rgba(0, 0, 165, 0.767)
+		),
+		url(../resources/background.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 10%;
+}
+
+.h-center {
+	max-width: 50%;
+	margin: 0 auto;
+}
+
+main {
+	width: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1 1 auto;
+}
+
+header {
+	color: white;
+	font-family: "Poppins", sans-serif;
+	padding-top: 5rem;
+}
+
+header h1,
+header h2 {
+	text-align: center;
+}
+
+header h1 {
+	font-weight: 900;
+}
+
+header h2 {
+	margin-top: 2%;
+}
+
+.swal-modal {
+	font-family: "Poppins", sans-serif;
+}
+
+.swal-modal .swal-text {
+	text-align: center;
+	padding: 0 1rem;
+}
+
+form {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1 1 auto;
+	margin-top: 3rem;
+}
+
+form > div:first-child {
+	padding: 5% 8%;
+	background: rgba(255, 255, 255, 0.158);
+	border-radius: 10px;
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+	margin-bottom: 4%;
+}
+
+form .form-group {
+	font-family: "Poppins", sans-serif;
+	font-size: 1.3rem;
+	flex: 1 1 auto;
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 0.3rem;
+	margin-bottom: 4%;
+}
+
+form .form-group.disabled .dropdown-input:disabled {
+	background-color: rgb(180, 180, 180);
+	color: white;
+}
+
+form .form-group label {
+	display: flex;
+	align-items: center;
+}
+
+form .form-group label,
+form .form-group p {
+	font-weight: 200;
+	color: white;
+}
+
+form .form-group.disabled label {
+	color: rgb(190, 190, 190);
+}
+
+form .text-input:focus,
+form .text-input:active,
+form .dropdown-input:focus,
+form .dropdown-input:active,
+form .textarea-input:focus,
+form .textarea-input:active {
+	outline: 0;
+	box-shadow: 0 0 0 0.2rem rgba(25, 0, 255, 0.25);
+}
+
+form .text-input,
+form .dropdown-input {
+	font-family: "Poppins", sans-serif;
+	color: black;
+	height: 2.3rem;
+	font-size: 1.1rem;
+	border: none;
+	border-radius: 5px;
+	padding: 0 8px;
+	background-clip: padding-box;
+}
+
+form .dropdown-input.unselected {
+	color: gray;
+	box-shadow: none
+}
+
+form input[type="number"] {
+	-moz-appearance: textfield;
+	appearance: textfield;
+	margin: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+form .dropdown-input {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+form .dropdown-parent {
+	position: relative;
+}
+
+form .dropdown-parent::after {
+	position: absolute;
+	content: "\25BC";
+	bottom: 1rem;
+	right: 1rem;
+	width: 10px;
+	height: 10px;
+	font-size: 0.8rem;
+	color: rgb(124, 124, 124);
+	pointer-events: none;
+}
+
+form .dropdown-parent.disabled::after {
+	color: rgb(196, 196, 196);
+}
+
+form .dropdown-parent.active:hover::after {
+	color: #222;
+}
+
+form .dropdown-input::-ms-expand {
+	display: none;
+}
+
+form .dropdown-input option {
+	color: black;
+}
+
+form .textarea-input {
+	font-family: "Poppins", sans-serif;
+	color: black;
+	font-size: 1.1rem;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 8px;
+	resize: none;
+	overflow: hidden;
+}
+
+form .checkbox-input,
+form .radio-input {
+	margin-right: 0.5rem;
+}
+
+main .form > .form-group:last-child {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+
+main .button {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 6.2rem;
+	height: 3rem;
+	padding: 6px 12px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: #3639ff;
+	color: white;
+}
+
+main .button#submit {
+	width: 6.6rem;
+	background-color: rgb(93, 184, 93);
+	margin-left: auto;
+	justify-content: center;
+}
+
+main .button#submit:disabled {
+	cursor: default;
+	background-color: rgb(52, 104, 52);
+}
+
+main .button#submit:disabled span {
+	color: rgb(146, 146, 146);
+}
+
+main .button#next {
+	margin-left: auto;
+}
+
+main .button#prev a {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+main .button span {
+	font-family: "Poppins", sans-serif;
+	color: white;
+	font-size: 1.5rem;
+	transform: translateY(-1px);
+}
+
+main .button .fa-chevron-left,
+main .button .fa-chevron-right {
+	font-size: 1.1rem;
+	transform: translateY(1px);
+}
+
+footer {
+	color: white;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	width: 42%;
+	margin: 0 auto;
+	min-height: 35%;
+	padding-top: 2%;
+	gap: 2rem;
+}
+
+footer .collaboration {
+	display: flex;
+	gap: 3.5rem;
+	justify-content: center;
+	width: 80%;
+	height: 40%;
+}
+
+footer .collaboration .logo {
+	height: 100%;
+	width: 20%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+footer #auf {
+	width: 18%;
+	background-size: 60%;
+	background-image: url(../resources/auf.png);
+}
+footer #css {
+	background-size: 100%;
+	background-image: url(../resources/ccs.png);
+}
+footer #medical {
+	background-size: 100%;
+	background-image: url(../resources/medical_center.png);
+}
+
+footer .links {
+	display: flex;
+	gap: 1rem;
+	font-family: "Poppins", sans-serif;
+	font-size: 1.3rem;
+	font-weight: 200;
+	white-space: pre-line;
+	color: white;
+}
+
+@media (max-width: 1300px) {
+	.h-center {
+		max-width: 60%;
+	}
+
+	footer {
+		width: 60%;
+	}
+}
+
+@media (max-width: 900px) {
+	.h-center {
+		max-width: 75%;
+	}
+
+	footer {
+		width: 85%;
+	}
+}
+
+@media (max-width: 700px) {
+	:root {
+		font-size: 12px;
+	}
+
+	.h-center {
+		max-width: 90%;
+	}
+
+	form .dropdown-parent::after {
+		bottom: 0.8rem;
+	}
+
+	footer {
+		width: 90%;
+		gap: 0.5rem;
+	}
+
+	footer .links {
+		flex-flow: column nowrap;
+	}
+}
+
+@media (max-height: 700px) {
+	footer {
+		min-height: 60%;
+	}
+}

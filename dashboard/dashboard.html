@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHC Dashboard | AUF</title>
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+        integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="./resources/favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"
+        integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"
+        integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <div class="overlay hidden">
+        <div class="h-center">
+            <div class="menu">
+                <div class="menu-content hidden">
+                    <span class="menu-text" id="user-form">User form</span>
+                    <span class="menu-text" id="update-total">Update total population</span>
+                    <span class="menu-text" id="change-password">Change password</span>
+                </div>
+                <i class="fa-solid fa-square-pen"></i>
+            </div>
+            <div id="left">
+                <div class="form-container">
+                    <h1 id="create-edit">Create User</h1>
+                    <form class="create-edit-form">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" class="text-input"
+                                placeholder="Enter auf email" pattern="^\w+[-._]*\w*@(auf[.]edu[.]ph)$" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" class="text-input"
+                                placeholder="Enter password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                                required />
+                            <i class="fa-solid eye fa-eye" parent="password"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="repeat-password">Repeat Password</label>
+                            <input type="password" id="repeat-password" name="repeat-password" class="text-input"
+                                placeholder="Repeat password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                                required />
+                            <i class="fa-solid eye fa-eye" parent="repeat-password"></i>
+                        </div>
+                        <button type="submit" class="button" id="create-update">create</button>
+                        <button type="button" class="button cancel">cancel</button>
+                    </form>
+                </div>
+                <div class="form-container hidden">
+                    <h1>Update Population</h1>
+                    <form class="update-total-form">
+                        <div>
+                            <div class="form-group">
+                                <label for="camp">CAMP</label>
+                                <input type="number" id="camp" name="camp" class="text-input"
+                                    placeholder="Enter CAMP population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="cas">CAS</label>
+                                <input type="number" id="cas" name="cas" class="text-input"
+                                    placeholder="Enter CAS population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="cba">CBA</label>
+                                <input type="number" id="cba" name="cba" class="text-input"
+                                    placeholder="Enter CBA population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="ccs">CCS</label>
+                                <input type="number" id="ccs" name="ccs" class="text-input"
+                                    placeholder="Enter CCS population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="ccje">CCJE</label>
+                                <input type="number" id="ccje" name="ccje" class="text-input"
+                                    placeholder="Enter CCJE population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="cea">CEA</label>
+                                <input type="number" id="cea" name="cea" class="text-input"
+                                    placeholder="Enter CEA population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="coe">COE</label>
+                                <input type="number" id="coe" name="coe" class="text-input"
+                                    placeholder="Enter COE population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="con">CON</label>
+                                <input type="number" id="con" name="con" class="text-input"
+                                    placeholder="Enter CON population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="sol">SOL</label>
+                                <input type="number" id="sol" name="sol" class="text-input"
+                                    placeholder="Enter SOL population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="som">SOM</label>
+                                <input type="number" id="som" name="som" class="text-input"
+                                    placeholder="Enter SOM population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="gs">GS</label>
+                                <input type="number" id="gs" name="gs" class="text-input"
+                                    placeholder="Enter GS population" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="is">IS</label>
+                                <input type="number" id="is" name="is" class="text-input"
+                                    placeholder="Enter IS population" min="0" value="0" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="button" id="update-college">update</button>
+                    </form>
+                </div>
+                <div class="form-container hidden">
+                    <h1>Change Password</h1>
+                    <form class="change-password-form">
+                        <div class="form-group">
+                            <label for="admin-old-password">Old Password</label>
+                            <input type="password" id="admin-old-password" name="admin-old-password" class="text-input"
+                                placeholder="Enter password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                                required />
+                            <i class="fa-solid eye fa-eye" parent="admin-old-password"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password">Password</label>
+                            <input type="password" id="admin-password" name="admin-password" class="text-input"
+                                placeholder="Enter password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                                required />
+                            <i class="fa-solid eye fa-eye" parent="admin-password"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-repeat-password">Repeat Password</label>
+                            <input type="password" id="admin-repeat-password" name="admin-repeat-password"
+                                class="text-input" placeholder="Repeat password"
+                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                                required />
+                            <i class="fa-solid eye fa-eye" parent="admin-repeat-password"></i>
+                        </div>
+                        <button type="submit" class="button" id="update">update</button>
+                    </form>
+                </div>
+            </div>
+            <div id="right">
+                <div>
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div class="overlay-loading">
+                    <div class="loadingio-spinner-pulse-5jjwmvrwa8d">
+                        <div class="ldio-49uawk63nex">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="search-user">
+                    <input type="text" id="search" name="search" class="text-input" placeholder="Search auf email"
+                        pattern=".{4,}" title="Must be at least 4 letters long" />
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="user-content">
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="h-center" id="header">
+        <div class="hidden" id="users">
+            <span>Users</span>
+            <i class="fa-solid fa-users-gear"></i>
+        </div>
+        <div id="title">
+            <h1 id="title">AUF My Health Check</h1>
+            <h2 id="description">Dashboard</h2>
+        </div>
+        <div class="hidden" id="sign_out">
+            <span>Sign out</span>
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
+    </header>
+
+    <main class="h-center">
+        <div class="main-loading">
+            <div class="loadingio-spinner-ripple-iwfn4igews">
+                <div class="ldio-wmzpnr70md">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard">
+            <div class="card">
+                <div>
+                    <div class="header">
+                        <h1 id="safe-count">0</h1>
+                        <i class="fa-solid fa-face-smile-beam"></i>
+                    </div>
+                    <h1 class="description">Healthy</h1>
+                </div>
+                <div>
+                    <div class="header">
+                        <h1 id="sick-count">0</h1>
+                        <i class="fa-solid fa-head-side-cough"></i>
+                    </div>
+                    <h1 class="description">Sick</h1>
+                </div>
+            </div>
+
+            <div class="card pie">
+                <div>
+                    <canvas id="sickness"></canvas>
+                </div>
+                <h1 class="description">Sickness per Surveyees</h1>
+            </div>
+
+            <div class="card bar">
+                <div>
+                    <canvas id="sickness-department"></canvas>
+                </div>
+                <h1 class="description">Sickness per Departments</h1>
+            </div>
+
+            <div class="view">
+                <div class="nav">
+                    <span>Departments</span>
+                    <div class="nav-right">
+                        <div class="department dropdown">
+                            <div class="department dropdown-text">
+                                <span>College of Allied Medical Professions</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="department dropdown-contents hidden">
+                                <div>
+                                    <span>College of Allied Medical Professions</span>
+                                    <span>College of Arts and Sciences</span>
+                                    <span>College of Business and Accountancy</span>
+                                    <span>College of Computer Studies</span>
+                                    <span>College of Criminal Justice Education</span>
+                                    <span>College of Engineering and Architecture</span>
+                                    <span>College of Education</span>
+                                    <span>College of Nursing</span>
+                                    <span>School of Law</span>
+                                    <span>School of Medicine</span>
+                                    <span>Graduate School</span>
+                                    <span>Integrated School</span>
+                                    <span>Non-teaching Personnel</span>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-file-arrow-down download"></i>
+                    </div>
+                </div>
+                <div class="surveyees">
+                </div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div class="header">
+                        <h1 id="not-exposed-count">0</h1>
+                        <i class="fa-solid fa-person-shelter"></i>
+                    </div>
+                    <h1 class="description">Not-Exposed</h1>
+                </div>
+                <div>
+                    <div class="header">
+                        <h1 id="exposed-count">0</h1>
+                        <i class="fa-solid fa-head-side-mask"></i>
+                    </div>
+                    <h1 class="description">Exposed</h1>
+                </div>
+            </div>
+            <div class="card pie">
+                <div>
+                    <canvas id="exposed" height="600px"></canvas>
+                </div>
+                <h1 class="description">Exposed Surveyees per Department</h1>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div class="header">
+                        <h1 id="sheltered-count">0</h1>
+                        <i class="fa-solid fa-person-shelter"></i>
+                    </div>
+                    <h1 class="description">Stayed Home</h1>
+                </div>
+                <div>
+                    <div class="header">
+                        <h1 id="traveled-count">0</h1>
+                        <i class="fa-solid fa-person-walking-luggage"></i>
+                    </div>
+                    <h1 class="description">Traveled Outside</h1>
+                </div>
+            </div>
+            <div class="card pie">
+                <div>
+                    <canvas id="province" height="600px"></canvas>
+                </div>
+                <h1 class="description">Traveled Outside Province per Department</h1>
+            </div>
+            <div class="card pie">
+                <div>
+                    <canvas id="philippines" height="600px"></canvas>
+                </div>
+                <h1 class="description">Traveled Outside Philippines per Department</h1>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div class="header">
+                        <h1 id="employee-count">0</h1>
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h1 class="description">Total Employees</h1>
+                </div>
+                <div>
+                    <div class="header">
+                        <h1 id="student-count">0</h1>
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h1 class="description">Total Students</h1>
+                </div>
+            </div>
+
+            <div class="card pie">
+                <div>
+                    <canvas id="colleges" height="600px"></canvas>
+                </div>
+                <h1 class="description">Total Surveyees per Department</h1>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer">
+        <div class="collaboration">
+            <div class="logo" id="auf"></div>
+            <div class="logo" id="css"></div>
+            <div class="logo" id="medical"></div>
+        </div>
+        <div class="links">
+            <a href="https://www.auf.edu.ph/modules.php?n=Home" target="_blank">www.auf.edu.ph</a>
+            <span>ccs@auf.edu.ph</span>
+            <span>uhs@auf.edu.ph</span>
+        </div>
+    </footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="module" src="./js/dashboard.js"></script>
+
+</html>

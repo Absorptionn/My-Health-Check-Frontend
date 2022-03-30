@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHC Sign in | AUF</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+        integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="./resources/favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <div class="overlay hidden">
+        <div class="h-center">
+            <div class="card">
+                <div>
+                    <i class="fa-solid overlay-icon fa-user-tie"></i>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="admin-password">Password</label>
+                        <input type="password" id="admin-password" name="admin-password" class="text-input"
+                            placeholder="Enter your password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                            required />
+                        <i class="fa-solid eye fa-eye" parent="admin-password"></i>
+                    </div>
+                    <div class="form-group">
+                        <label for="repeat-password">Repeat Password</label>
+                        <input type="password" id="repeat-password" name="repeat-password" class="text-input"
+                            placeholder="Repeat your password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                            required />
+                        <i class="fa-solid eye fa-eye" parent="repeat-password"></i>
+                    </div>
+                    <button type="submit" class="overlay-button">register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <main class="h-center">
+        <div class="card">
+            <div>
+                <i class="fa-solid icon fa-user-nurse"></i>
+            </div>
+            <form class="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="text-input"
+                        placeholder="Enter your username" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="text-input"
+                        placeholder="Enter your password" required />
+                    <i class="fa-solid eye fa-eye" parent="password"></i>
+                </div>
+                <button type="submit" class="button">sign in</button>
+            </form>
+        </div>
+    </main>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="module" src="./js/index.js"></script>
+
+</html>

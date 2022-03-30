@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="./resources/favicon.ico">
+    <title>MHC Survey | AUF</title>
+</head>
+
+<body>
+    <header class="h-center" id="header">
+        <h1 id="title">AUF My Health Check</h1>
+        <h2 id="description">How are you feeling today?</h2>
+    </header>
+
+    <main class="h-center" id="main">
+        <form class="form" id="form" action="/health-and-safety.html">
+            <div>
+                <div class="form-group">
+                    <p>Have you experienced any of the following in the last 14 days? (check all that apply)</p>
+                    <label>
+                        <input type='checkbox' name='experiences' class='checkbox-input' value='Fever'>
+                        Fever
+                    </label>
+                    <label>
+                        <input type='checkbox' name='experiences' class='checkbox-input' value='Dry cough'>
+                        Dry cough
+                    </label>
+                    <label>
+                        <input type='checkbox' name='experiences' class='checkbox-input' value='Fatigue'>
+                        Fatigue
+                    </label>
+                    <label>
+                        <input type='checkbox' name='experiences' class='checkbox-input' value='Body aches and pains'>
+                        Body aches and pains
+                    </label>
+                    <label>
+                        <input type='checkbox' name='experiences' class='checkbox-input' value='Runny nose'>
+                        Runny nose
+                    </label>
+                    <label>
+                        <input type='checkbox' name='experiences' class='checkbox-input' value='Sore throat'>
+                        Sore throat
+                    </label>
+                    <label>
+                        <input type='checkbox' name='experiences' class='checkbox-input' value='Shortness of breath'>
+                        Shortness of breath
+                    </label>
+                    <label>
+                        <input type='checkbox' name='Diarrhea' class='checkbox-input' value='Diarrhea'>
+                        Diarrhea
+                    </label>
+                    <label>
+                        <input type='checkbox' name='Headache' class='checkbox-input' value='Headache'>
+                        Headache
+                    </label>
+                    <label>
+                        <input type='checkbox' name='Loss of smell' class='checkbox-input' value='Loss of smell'>
+                        Loss of smell
+                    </label>
+                    <label>
+                        <input type='checkbox' name='Loss of taste' class='checkbox-input' value='Loss of taste'>
+                        Loss of taste
+                    </label>
+                </div>
+
+                <div class="form-group" id="exposed">
+                    <p>Have you been exposed to someone with confirmed COVID-19 in the past 14 days?</p>
+                    <label>
+                        <input type='radio' name='exposed' class="radio-input" value="exposed" required>
+                        Yes
+                    </label>
+                    <label>
+                        <input type='radio' name='exposed' class="radio-input" value="not exposed">
+                        No
+                    </label>
+                </div>
+
+                <div class="form-group" id="traveled">
+                    <p>Have you traveled outside of your province or the Philippines in the last 14 days?</p>
+                    <label>
+                        <input type='radio' name='traveled' class="radio-input" value="outside province" required>
+                        Yes, outside the province
+                    </label>
+                    <label>
+                        <input type='radio' name='traveled' class="radio-input" value="outside philippines">
+                        Yes, outside the Philippines
+                    </label>
+                    <label>
+                        <input type='radio' name='traveled' class="radio-input" value="not traveled">
+                        No
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="button" id="prev">
+                    <a href="/survey/index.html">
+                        <i class="fa-solid fa-chevron-left"></i><span>&nbsp;prev</span>
+                    </a>
+                </button>
+                <button type="submit" class="button" id="submit"><span>submit</span></button>
+            </div>
+        </form>
+    </main>
+
+    <footer id="footer">
+        <div class="collaboration">
+            <div class="logo" id="auf"></div>
+            <div class="logo" id="css"></div>
+            <div class="logo" id="medical"></div>
+        </div>
+        <div class="links">
+            <a href="https://www.auf.edu.ph/modules.php?n=Home" target="_blank">www.auf.edu.ph</a>
+            <span>ccs@auf.edu.ph</span>
+            <span>uhs@auf.edu.ph</span>
+        </div>
+    </footer>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="module" src="./js/health-and-safety.js"></script>
+
+</html>
