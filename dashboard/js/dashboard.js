@@ -24,6 +24,7 @@ const month = [
 ];
 
 let sick_surveee_chart = {};
+let overtime_chart = {};
 let sick_department_chart = {};
 let exposed_chart = {};
 let outside_province_chart = {};
@@ -144,6 +145,7 @@ function months_contents_clicked(e) {
 	monthly_sick_department(month_index + 1);
 	monthly_exposed(month_index + 1);
 	monthly_traveled(month_index + 1);
+	set_sickness_overtime(target_month, "Whole Month", 0, 0);
 }
 
 function weeks_clicked(e) {
@@ -211,7 +213,9 @@ function weekly_sick_count_surveyees(current_month, start, end) {
 }
 
 function weekly_sick_surveyees(current_month, start, end) {
-	sick_surveee_chart.destroy();
+	if (sick_surveee_chart instanceof Chart) {
+		sick_surveee_chart.destroy();
+	}
 	let sickness = document.getElementById("sickness").getContext("2d");
 	let temp_sicknesses = sicknesses.slice(0, sicknesses.length - 1);
 	let values = {};
@@ -297,7 +301,9 @@ function weekly_sick_surveyees(current_month, start, end) {
 }
 
 function weekly_sick_department(current_month, start, end) {
-	sick_department_chart.destroy();
+	if (sick_department_chart instanceof Chart) {
+		sick_department_chart.destroy();
+	}
 	let sick_count_department = document
 		.getElementById("sickness-department")
 		.getContext("2d");
@@ -421,7 +427,9 @@ function weekly_sick_department(current_month, start, end) {
 }
 
 function weekly_exposed(current_month, start, end) {
-	exposed_chart.destroy();
+	if (exposed_chart instanceof Chart) {
+		exposed_chart.destroy();
+	}
 	let exposed = document.getElementById("exposed").getContext("2d");
 	let is_exposed = {};
 	let is_not_exposed = 0;
@@ -478,6 +486,9 @@ function weekly_exposed(current_month, start, end) {
 		index++;
 	}
 
+	document.getElementById("not-exposed-count").innerText = is_not_exposed;
+	document.getElementById("exposed-count").innerText = sum || 0;
+
 	let checker = Object.values(is_exposed).reduce(
 		(prev_value, current_value) => prev_value + current_value
 	);
@@ -498,9 +509,6 @@ function weekly_exposed(current_month, start, end) {
 			is_exposed[value]++;
 		}
 	});
-
-	document.getElementById("not-exposed-count").innerText = is_not_exposed;
-	document.getElementById("exposed-count").innerText = sum || 0;
 
 	const config = set_pie(
 		Object.keys(is_exposed),
@@ -541,8 +549,14 @@ function weekly_exposed(current_month, start, end) {
 }
 
 function weekly_traveled(current_month, start, end) {
-	outside_province_chart.destroy();
-	outside_philippines_chart.destroy();
+	if (outside_province_chart instanceof Chart) {
+		outside_province_chart.destroy();
+	}
+
+	if (outside_philippines_chart instanceof Chart) {
+		outside_philippines_chart.destroy();
+	}
+
 	const province = document.getElementById("province").getContext("2d");
 	const philippines = document.getElementById("philippines").getContext("2d");
 	let has_traveled = 0;
@@ -606,6 +620,9 @@ function weekly_traveled(current_month, start, end) {
 		index++;
 	}
 
+	document.getElementById("sheltered-count").innerText = has_not_traveled;
+	document.getElementById("traveled-count").innerText = has_traveled;
+
 	if (!has_traveled) {
 		document.getElementById("province").parentNode.parentNode.style.display =
 			"none";
@@ -618,9 +635,6 @@ function weekly_traveled(current_month, start, end) {
 		document.getElementById("philippines").parentNode.parentNode.style.display =
 			"block";
 	}
-
-	document.getElementById("sheltered-count").innerText = has_not_traveled;
-	document.getElementById("traveled-count").innerText = has_traveled;
 
 	Object.keys(outside_province).forEach((key) => {
 		if (!outside_province[key]) {
@@ -797,6 +811,9 @@ function month_sick_count_surveyees(current_month) {
 
 function month_sick_surveyees(current_month) {
 	sick_surveee_chart.destroy();
+	if (sick_surveee_chart instanceof Chart) {
+		sick_surveee_chart.destroy();
+	}
 	let sickness = document.getElementById("sickness").getContext("2d");
 	let temp_sicknesses = sicknesses.slice(0, sicknesses.length - 1);
 	let values = {};
@@ -879,7 +896,9 @@ function month_sick_surveyees(current_month) {
 }
 
 function monthly_sick_department(current_month) {
-	sick_department_chart.destroy();
+	if (sick_department_chart instanceof Chart) {
+		sick_department_chart.destroy();
+	}
 	let sick_count_department = document
 		.getElementById("sickness-department")
 		.getContext("2d");
@@ -1000,7 +1019,9 @@ function monthly_sick_department(current_month) {
 }
 
 function monthly_exposed(current_month) {
-	exposed_chart.destroy();
+	if (exposed_chart instanceof Chart) {
+		exposed_chart.destroy();
+	}
 	let exposed = document.getElementById("exposed").getContext("2d");
 	let is_exposed = {};
 	let is_not_exposed = 0;
@@ -1054,6 +1075,9 @@ function monthly_exposed(current_month) {
 		index++;
 	}
 
+	document.getElementById("not-exposed-count").innerText = is_not_exposed;
+	document.getElementById("exposed-count").innerText = sum || 0;
+
 	let checker = Object.values(is_exposed).reduce(
 		(prev_value, current_value) => prev_value + current_value
 	);
@@ -1074,9 +1098,6 @@ function monthly_exposed(current_month) {
 			is_exposed[value]++;
 		}
 	});
-
-	document.getElementById("not-exposed-count").innerText = is_not_exposed;
-	document.getElementById("exposed-count").innerText = sum || 0;
 
 	const config = set_pie(
 		Object.keys(is_exposed),
@@ -1117,8 +1138,13 @@ function monthly_exposed(current_month) {
 }
 
 function monthly_traveled(current_month) {
-	outside_province_chart.destroy();
-	outside_philippines_chart.destroy();
+	if (outside_province_chart instanceof Chart) {
+		outside_province_chart.destroy();
+	}
+
+	if (outside_philippines_chart instanceof Chart) {
+		outside_philippines_chart.destroy();
+	}
 	const province = document.getElementById("province").getContext("2d");
 	const philippines = document.getElementById("philippines").getContext("2d");
 	let has_traveled = 0;
@@ -1179,6 +1205,9 @@ function monthly_traveled(current_month) {
 		index++;
 	}
 
+	document.getElementById("sheltered-count").innerText = has_not_traveled;
+	document.getElementById("traveled-count").innerText = has_traveled;
+
 	if (!has_traveled) {
 		document.getElementById("province").parentNode.parentNode.style.display =
 			"none";
@@ -1191,9 +1220,6 @@ function monthly_traveled(current_month) {
 		document.getElementById("philippines").parentNode.parentNode.style.display =
 			"block";
 	}
-
-	document.getElementById("sheltered-count").innerText = has_not_traveled;
-	document.getElementById("traveled-count").innerText = has_traveled;
 
 	Object.keys(outside_province).forEach((key) => {
 		if (!outside_province[key]) {
@@ -1321,6 +1347,13 @@ function weeks_contents_clicked(e) {
 		start: parseInt(e.currentTarget.getAttribute("start")),
 		end: parseInt(e.currentTarget.getAttribute("end")),
 	};
+
+	set_sickness_overtime(
+		months.querySelector(".months-text").innerText,
+		target[0],
+		start,
+		end
+	);
 
 	if (
 		target[1] &&
@@ -1829,6 +1862,23 @@ function window_clicked(e) {
 			dropdown.querySelector(".dropdown-text").classList.remove("active");
 		});
 	}
+
+	if (
+		e.target !== months.querySelector(".months-text") &&
+		!months.querySelector(".months-contents").classList.contains("hidden")
+	) {
+		months.querySelector(".months-text").classList.remove("active");
+		months.querySelector(".months-contents").classList.add("hidden");
+	}
+
+	if (
+		e.target !== weeks.querySelector(".weeks-text") &&
+		!weeks.querySelector(".weeks-contents").classList.contains("hidden")
+	) {
+		weeks.querySelector(".weeks-text").classList.remove("active");
+		weeks.querySelector(".weeks-contents").classList.add("hidden");
+	}
+
 	if (e.target !== menu_icon && !menu_content.classList.contains("hidden")) {
 		menu_content.classList.add("hidden");
 	}
@@ -2149,7 +2199,7 @@ const set_bar = (
 						size: 18,
 						weight: 200,
 					},
-					color: "#ccc",
+					color: "white",
 				},
 			},
 		},
@@ -2160,6 +2210,116 @@ const set_bar = (
 		data: data,
 		options: options,
 		plugins: [ChartDataLabels],
+	};
+
+	return config;
+};
+
+const set_line = (labels, values_1, values_2) => {
+	const data = {
+		labels: labels,
+		datasets: [
+			{
+				label: "Sick",
+				data: values_2,
+				borderColor: "#c4142f",
+				backgroundColor: "#c4142e60",
+			},
+			{
+				label: "Assessment",
+				data: values_1,
+				borderColor: "#240bcd",
+				backgroundColor: "#240bce60",
+			},
+		],
+	};
+
+	const options = {
+		responsive: true,
+		animation: false,
+		plugins: {
+			legend: {
+				display: true,
+				labels: {
+					color: "white",
+					font: {
+						family: "Poppins",
+						size: 18,
+						weight: 200,
+					},
+					usePointStyle: true,
+					boxWidth: 25,
+					padding: 25,
+				},
+			},
+			tooltip: {
+				titleFont: {
+					family: "Poppins",
+					size: 18,
+					weight: 400,
+					lineHeight: 1.7,
+				},
+				bodyFont: {
+					family: "Poppins",
+					size: 18,
+					weight: 200,
+					lineHeight: 1.7,
+				},
+				bodyFontSize: 14,
+				bodyAlign: "left",
+				displayColors: false,
+				padding: 12,
+				callbacks: {
+					title: function (context) {
+						let title = context[0].label;
+						return title;
+					},
+					label: function (context) {
+						let label = context.dataset.label;
+						let value = context.formattedValue;
+						return `${label}: ${value}`;
+					},
+				},
+			},
+		},
+		scales: {
+			x: {
+				beginAtZero: true,
+				grid: {
+					display: false,
+				},
+				ticks: {
+					font: {
+						family: "Poppins",
+						size: 18,
+						weight: 200,
+					},
+					color: "#fff",
+				},
+			},
+			y: {
+				beginAtZero: true,
+				grid: {
+					drawBorder: false,
+				},
+				ticks: {
+					font: {
+						family: "Poppins",
+						size: 18,
+						weight: 200,
+					},
+					color: "white",
+					precision: 0,
+				},
+			},
+		},
+	};
+
+	const config = {
+		type: "line",
+		data: data,
+		options: options,
+		plugins: [legend_margin],
 	};
 
 	return config;
@@ -2262,10 +2422,153 @@ function set_healthy_sick_count() {
 	sick_surveyees.innerText = sick;
 }
 
+function set_sickness_overtime(current_month, target, start, end) {
+	if (overtime_chart instanceof Chart) {
+		overtime_chart.destroy();
+	}
+	const parent = document.querySelector(".line");
+	if (target === "Today") {
+		parent.style.display = "none";
+		return;
+	}
+
+	parent.style.display = "block";
+
+	const overtime = document.getElementById("overtime").getContext("2d");
+	let labels = [];
+	for (let i = start; i <= end; i++) {
+		labels.push(`${month[month.indexOf(current_month)]} ${i}`);
+	}
+
+	let sickness_values = [];
+	let assessment_values = [];
+
+	if (end) {
+		current_month = month.indexOf(current_month) + 1;
+		for (const date of labels) {
+			const target_day = parseInt(date.split(" ")[1]);
+			let total_assessment = 0;
+			let total_sickness = 0;
+			for (const department of departments) {
+				for (const surveyee of Object.keys(reports[department])) {
+					for (const assessment of reports[department][surveyee].assessments) {
+						const date = assessment.date.split("-");
+						const { month, day } = {
+							month: parseInt(date[1]),
+							day: parseInt(date[2]),
+						};
+						if (month === current_month && day === target_day) {
+							total_assessment++;
+							if (!assessment.experiences.includes("None of the above")) {
+								total_sickness++;
+							}
+						}
+					}
+				}
+			}
+			assessment_values.push(total_assessment);
+			sickness_values.push(total_sickness);
+		}
+	}
+	if (target === "Whole Month") {
+		labels = [];
+		const month_index = month.indexOf(current_month);
+		const current_year = new Date().getFullYear();
+		const month_weeks = get_weeks_start_and_end_in_month(
+			month_index,
+			current_year
+		);
+		Object.keys(month_weeks).forEach((index) => {
+			index = parseInt(index);
+			index++;
+			const start = month_weeks[index - 1].start;
+			const end = month_weeks[index - 1].end;
+			labels.push(`${current_month} ${start}-${end}`);
+		});
+		current_month = month.indexOf(current_month) + 1;
+		for (const week of month_weeks) {
+			let week_sick_counter = 0;
+			let week_assessment_counter = 0;
+			for (const department of departments) {
+				for (const surveyee of Object.keys(reports[department])) {
+					const assessment_length =
+						reports[department][surveyee].assessments.length;
+					let healthy_checker = 0;
+					let sick_checker = 0;
+					let healthy_counter = assessment_length;
+					let sick_counter = assessment_length;
+					let assessment_index = 0;
+					for (const assessment of reports[department][surveyee].assessments) {
+						const date = assessment.date.split("-");
+						const { month, day } = {
+							month: parseInt(date[1]),
+							day: parseInt(date[2]),
+						};
+
+						if (
+							month === current_month &&
+							day >= week.start &&
+							day <= week.end
+						) {
+							week_assessment_counter++;
+							if (assessment.experiences.includes("None of the above")) {
+								if (!healthy_checker) {
+									healthy_checker++;
+									healthy_counter = assessment_index;
+								}
+							} else {
+								if (!sick_checker) {
+									sick_checker++;
+									sick_counter = assessment_index;
+								}
+							}
+						}
+
+						if (healthy_checker && sick_checker) {
+							break;
+						}
+						assessment_index++;
+					}
+					if (
+						healthy_counter === assessment_length &&
+						sick_counter === assessment_length
+					) {
+						break;
+					}
+					if (healthy_counter > sick_counter) {
+						week_sick_counter++;
+					}
+				}
+			}
+			assessment_values.push(week_assessment_counter);
+			sickness_values.push(week_sick_counter);
+		}
+	}
+
+	let assessment_checker = Object.values(assessment_values).reduce(
+		(prev_value, current_value) => prev_value + current_value
+	);
+	let sick_checker = Object.values(sickness_values).reduce(
+		(prev_value, current_value) => prev_value + current_value
+	);
+
+	if (!assessment_checker || !sick_checker) {
+		document.getElementById("overtime").parentNode.parentNode.style.display =
+			"none";
+		return;
+	} else {
+		document.getElementById("overtime").parentNode.parentNode.style.display =
+			"block";
+	}
+
+	const config = set_line(labels, assessment_values, sickness_values);
+	overtime_chart = new Chart(overtime, config);
+}
+
 function set_sickness_per_surveyees() {
-	let sickness = document.getElementById("sickness").getContext("2d");
-	let temp_sicknesses = sicknesses.slice(0, sicknesses.length - 1);
-	let values = {};
+	const sickness = document.getElementById("sickness").getContext("2d");
+	const temp_sicknesses = sicknesses.slice(0, sicknesses.length - 1);
+	const values = {};
 	for (const department of departments) {
 		for (const surveyee of Object.keys(reports[department])) {
 			for (const assessment of reports[department][surveyee].assessments) {
@@ -2336,11 +2639,11 @@ function set_sickness_per_surveyees() {
 }
 
 function set_sickness_per_department() {
-	let sick_count_department = document
+	const sick_count_department = document
 		.getElementById("sickness-department")
 		.getContext("2d");
 
-	let values = {};
+	const values = {};
 
 	let index = 0;
 	for (const department of departments) {
@@ -2452,8 +2755,8 @@ function set_sickness_per_department() {
 }
 
 function set_exposed_per_department() {
-	let exposed = document.getElementById("exposed").getContext("2d");
-	let is_exposed = {};
+	const exposed = document.getElementById("exposed").getContext("2d");
+	const is_exposed = {};
 	let is_not_exposed = 0;
 	let sum = 0;
 
@@ -2476,6 +2779,9 @@ function set_exposed_per_department() {
 		index++;
 	}
 
+	document.getElementById("not-exposed-count").innerText = is_not_exposed;
+	document.getElementById("exposed-count").innerText = sum || 0;
+
 	let checker = Object.values(is_exposed).reduce(
 		(prev_value, current_value) => prev_value + current_value
 	);
@@ -2496,9 +2802,6 @@ function set_exposed_per_department() {
 			is_exposed[value]++;
 		}
 	});
-
-	document.getElementById("not-exposed-count").innerText = is_not_exposed;
-	document.getElementById("exposed-count").innerText = sum || 0;
 
 	const config = set_pie(
 		Object.keys(is_exposed),
@@ -2570,6 +2873,9 @@ function set_traveled_per_department() {
 		index++;
 	}
 
+	document.getElementById("sheltered-count").innerText = has_not_traveled;
+	document.getElementById("traveled-count").innerText = has_traveled;
+
 	if (!has_traveled) {
 		document.getElementById("province").parentNode.parentNode.style.display =
 			"none";
@@ -2582,9 +2888,6 @@ function set_traveled_per_department() {
 		document.getElementById("philippines").parentNode.parentNode.style.display =
 			"block";
 	}
-
-	document.getElementById("sheltered-count").innerText = has_not_traveled;
-	document.getElementById("traveled-count").innerText = has_traveled;
 
 	Object.keys(outside_province).forEach((key) => {
 		if (!outside_province[key]) {
@@ -2704,7 +3007,7 @@ function set_traveled_per_department() {
 }
 
 function set_report_views() {
-	let surveyee_content = document.querySelector(".surveyees");
+	const surveyee_content = document.querySelector(".surveyees");
 
 	for (const department of departments) {
 		for (const surveyee of Object.keys(reports[department])) {
@@ -3021,10 +3324,10 @@ async function download_data(e) {
 }
 
 function get_weeks_start_and_end_in_month(month, year) {
-	let weeks = [],
-		firstDate = new Date(year, month, 1),
-		lastDate = new Date(year, month + 1, 0),
-		numDays = lastDate.getDate();
+	let weeks = [];
+	let firstDate = new Date(year, month, 1);
+	let lastDate = new Date(year, month + 1, 0);
+	let numDays = lastDate.getDate();
 
 	let start = 1;
 	let end = 7 - firstDate.getDay();

@@ -437,8 +437,11 @@ main {
 	justify-content: space-between;
 }
 
-.ranges .weeks-text #week-range{
-	margin-right: .5rem;
+.ranges .weeks-text #week-range {
+	margin-right: 0.5rem;
+}
+.ranges .weeks-text div {
+	pointer-events: none;
 }
 
 .view {
@@ -894,13 +897,25 @@ main {
 	gap: 3rem;
 }
 
-.pie {
-	padding: 5% 0 5% 0;
+.line,
+.pie,
+.bar {
 	flex-flow: column nowrap;
 }
 
+.pie {
+	padding: 5% 0;
+}
+
+.line {
+	display: none;
+	padding: 3% 0 5% 0;
+}
+.line canvas{
+	margin: 2% 5% 1% 5%;
+}
+
 .bar {
-	flex-flow: column nowrap;
 	padding: 0;
 	padding: 5% 0;
 }
@@ -924,7 +939,7 @@ main {
 	transform: translateY(0.5rem);
 }
 
-.card canvas{
+.card canvas {
 	margin-bottom: 3rem;
 }
 
