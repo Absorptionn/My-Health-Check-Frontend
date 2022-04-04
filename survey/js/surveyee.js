@@ -103,7 +103,7 @@ function dropdown_changed(e) {
 			course.disabled = false;
 			course.classList.add("unselected");
 			let html =
-				"<option disabled selected value hidden>-- Select course --</option>";
+				"<option disabled selected value hidden>-- Select program --</option>";
 			for (const course of courses[target_college]) {
 				html += `<option value='${course}'>${course}</option>`;
 			}
@@ -163,7 +163,7 @@ async function txt_email_focus_out(e) {
 				course.disabled = false;
 				course.classList.remove("unselected");
 				let html =
-					"<option disabled selected value hidden>-- Select course --</option>";
+					"<option disabled selected value hidden>-- Select program --</option>";
 				for (const course of courses[surveyee.college]) {
 					html += `<option value='${course}'>${course}</option>`;
 				}
@@ -174,7 +174,7 @@ async function txt_email_focus_out(e) {
 				course.disabled = true;
 				course.classList.add("unselected");
 				let html =
-					"<option disabled selected value hidden>-- Select course --</option>";
+					"<option disabled selected value hidden>-- Select program --</option>";
 				course.innerHTML = html;
 			}
 		}
@@ -204,7 +204,7 @@ async function txt_email_focus_out(e) {
 			course.disabled = false;
 			course.classList.remove("unselected");
 			let html =
-				"<option disabled selected value hidden>-- Select course --</option>";
+				"<option disabled selected value hidden>-- Select program --</option>";
 			for (const course of courses[surveyee.college]) {
 				html += `<option value='${course}'>${course}</option>`;
 			}

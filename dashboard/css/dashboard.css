@@ -125,6 +125,10 @@ body::after {
 	margin-top: 8rem;
 }
 
+.overlay #left .fa-xmark{
+	display: none;		
+}
+
 .overlay #left.on-college {
 	margin-top: 2rem;
 	padding: 4rem 0;
@@ -372,10 +376,6 @@ header {
 	padding-top: 5rem;
 }
 
-header #title.left {
-	align-items: start;
-}
-
 header div {
 	height: min-content;
 	display: flex;
@@ -556,6 +556,7 @@ main {
 	align-items: center;
 	padding: 0 1rem;
 	cursor: pointer;
+	width: 100%;
 }
 
 .months-contents span:hover,
@@ -911,7 +912,7 @@ main {
 	display: none;
 	padding: 3% 0 5% 0;
 }
-.line canvas{
+.line canvas {
 	margin: 2% 5% 1% 5%;
 }
 
@@ -947,6 +948,39 @@ main {
 	font-weight: 200;
 	text-align: center;
 	transform: translateY(-0.5rem);
+}
+
+#dot-status {
+	width: 100%;
+}
+
+#dot-status h1 {
+	text-align: center;
+}
+
+#dot-status .dot-main {
+	display: flex;
+	justify-content: space-evenly;
+	padding: 0 5rem;
+}
+
+#dot-status .dot-content {
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 1rem;
+}
+
+#dot-status .dot-section{
+	width: 100%;
+}
+
+#dot-status .dot-section h1 {
+	font-weight: 200;
+}
+
+#dot-status .dot-item li {
+	text-transform: capitalize;
+	list-style-position: inside;
 }
 
 footer {
@@ -999,27 +1033,56 @@ footer .links {
 	color: white;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1440px) {
+	.overlay #left {
+		margin-top: 6rem;
+	}
+
+	.overlay #left.on-college {
+		margin-top: -0.5rem;
+	}
+
+	.overlay #left.on-college h1 {
+		padding: 0 3rem;
+	}
+
+	.update-total-form {
+		max-height: 45%;
+	}
+
+	.update-total-form > div {
+		padding: 0.5rem 3.4rem 1rem 3.4rem;
+	}
+
 	.department .dropdown-contents {
 		padding-top: 10%;
 	}
 
 	.h-center {
-		max-width: 60%;
+		max-width: 70%;
 	}
 
 	footer {
 		width: 60%;
 	}
+
+	footer .collaboration {
+		height: 45%;
+	}
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
 	.department .dropdown-contents {
-		padding-top: 11%;
+		padding-top: 6%;
 	}
 
 	.h-center {
-		max-width: 70%;
+		max-width: 80%;
+	}
+
+	.ranges .months,
+	.ranges .weeks {
+		width: 30%;
 	}
 
 	footer {
@@ -1037,15 +1100,31 @@ footer .links {
 
 @media (max-width: 800px) {
 	.department .dropdown-contents {
-		padding-top: 8%;
+		padding-top: 6%;
 	}
 
 	:root {
 		font-size: 12px;
 	}
 
+	.overlay #left {
+		margin-top: 9rem;
+	}
+
+	.overlay #left.on-college {
+		margin-top: 4rem;
+	}
+
+	.overlay #left.on-college h1 {
+		padding: 0 3rem;
+	}
+
+	.update-total-form {
+		max-height: 58%;
+	}
+
 	.h-center {
-		max-width: 80%;
+		max-width: 90%;
 	}
 
 	footer {
@@ -1053,9 +1132,13 @@ footer .links {
 	}
 }
 
-@media (max-width: 700px) {
+@media (max-width: 500px) {
+	:root {
+		font-size: 10px;
+	}
+
 	.department .dropdown-contents {
-		padding-top: 8%;
+		padding-top: 13%;
 	}
 
 	.card .header {
@@ -1064,6 +1147,71 @@ footer .links {
 
 	.h-center {
 		max-width: 90%;
+	}
+
+	.overlay .h-center{
+		max-width: 100%;
+		flex-flow: column nowrap;
+		overflow: hidden scroll;
+	}
+
+	.overlay #left,
+	.overlay #right{
+		margin-top: 0;
+		width: 100%;
+	}
+
+	.overlay #left{
+		position: relative;
+	}
+
+	.fa-xmark{
+		position: fixed;
+		display: inline !important;
+		top: 3.9rem;
+		right: 3.9rem;
+		font-size: 3rem;
+		z-index: 9999;
+	}
+
+	.overlay #right{
+		height: 100%;
+		padding-bottom: 10rem;
+	}
+
+	.user-content{
+		max-height: 25rem !important;
+		overflow: hidden scroll !important;
+	}
+
+	.overlay #left.on-college {
+		margin-top: 0rem;
+	}
+
+	.update-total-form{
+		max-height: 100%;
+	}
+
+	.overlay .menu{
+		position: fixed;
+	}
+
+	#title,
+	#description{
+		font-size: 1.7rem;
+	}
+
+	.ranges .months,
+	.ranges .weeks {
+		width: 35%;
+	}
+
+	#dot-status .dot-main {
+		padding: 0 1rem;
+	}
+
+	#dot-status .dot-item {
+		text-align: center;
 	}
 
 	footer {
@@ -1084,17 +1232,8 @@ footer .links {
 	}
 }
 
-@media (max-width: 500px) {
-	:root {
-		font-size: 10px;
-	}
-	.department .dropdown-contents {
-		padding-top: 13%;
-	}
-}
-
 @media (max-height: 700px) {
 	footer {
-		min-height: 60%;
+		min-height: 50%;
 	}
 }
