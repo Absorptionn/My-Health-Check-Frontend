@@ -31,7 +31,6 @@ let exposed_chart = {};
 let outside_province_chart = {};
 let outside_philippines_chart = {};
 
-let target_date = "";
 let healthy_surveyees_tooltip = {};
 let sick_surveyees_tooltip = {};
 
@@ -1346,7 +1345,6 @@ function monthly_traveled(current_month) {
 }
 
 function weeks_contents_clicked(e) {
-	document.getElementById("dot-status").innerHTML = "";
 	const current_month =
 		month.indexOf(months.querySelector(".months-text").innerText) + 1;
 	const week_text_spans = weeks.querySelectorAll(".weeks-text span");
@@ -1645,7 +1643,7 @@ async function users_clicked(e) {
 		overlay.classList.remove("hidden");
 		document.body.style.overflow = "hidden";
 
-		display_users();
+		await display_users();
 		user_loading(false);
 	}
 }
@@ -1730,7 +1728,7 @@ async function sign_out_clicked(e) {
 			const result = await HMWADataService.logout(user_email);
 			if (result && result.data.acknowledged) {
 				sessionStorage.clear();
-				window.location.href = "/dashboard/index.html";
+				window.location.href = "/index.html";
 			}
 		}
 	}
@@ -2241,82 +2239,6 @@ const set_bar = (
 	return config;
 };
 
-function display_dot_status() {
-	const dot_status = document.getElementById("dot-status");
-	let day = target_date.split(" ")[1];
-	let healthy_html = "";
-	let sick_html = "";
-	if (healthy_surveyees_tooltip[day]) {
-		let department_html = "";
-
-		Object.keys(healthy_surveyees_tooltip[day]).forEach((department) => {
-			let surveyee_html = "";
-
-			healthy_surveyees_tooltip[day][department].forEach((surveyee) => {
-				surveyee_html += `<li>${surveyee}</li>`;
-			});
-
-			department_html += `
-				<div class="dot-item"> 
-					<h3>${department}</h3>
-					<ol>
-						${surveyee_html}
-					</ol>
-				</div>
-			`;
-		});
-
-		healthy_html += `
-			<div class="dot-section" id="healthy-surveyees">
-				<h1>Healthy Surveyees</h1>
-				<div class="dot-content">
-					${department_html}
-				</div>
-			</div>
-		`;
-	}
-	if (sick_surveyees_tooltip[day]) {
-		let department_html = "";
-
-		Object.keys(sick_surveyees_tooltip[day]).forEach((department) => {
-			let surveyee_html = "";
-
-			sick_surveyees_tooltip[day][department].forEach((surveyee) => {
-				surveyee_html += `<li>${surveyee}</li>`;
-			});
-
-			department_html += `
-				<div class="dot-item"> 
-					<h3>${department}</h3>
-					<ol>
-						${surveyee_html}
-					</ol>
-				</div>
-			`;
-		});
-
-		sick_html += `
-			<div class="dot-section" id="sick-surveyees">
-				<h1>Sick Surveyees</h1>
-				<div class="dot-content">
-					${department_html}
-				</div>
-			</div>
-		`;
-	}
-	let html = "";
-	if (healthy_html || sick_html) {
-		html += `
-		<h1>${target_date}</h1>
-		<div class="dot-main">
-			${healthy_html}
-			${sick_html}
-		</div>
-	`;
-	}
-	dot_status.innerHTML = html;
-}
-
 const set_line = (labels, values_1, values_2) => {
 	const data = {
 		labels: labels,
@@ -2342,9 +2264,6 @@ const set_line = (labels, values_1, values_2) => {
 	}
 
 	const options = {
-		onClick: (e, active_elements, chart) => {
-			display_dot_status();
-		},
 		responsive: true,
 		animation: false,
 		plugins: {
@@ -2382,7 +2301,6 @@ const set_line = (labels, values_1, values_2) => {
 				callbacks: {
 					title: function (context) {
 						let title = context[0].label;
-						target_date = title;
 						return title;
 					},
 					label: function (context) {

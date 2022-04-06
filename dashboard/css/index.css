@@ -36,6 +36,15 @@ body::after {
 	margin: 0 auto;
 }
 
+.swal-modal {
+	font-family: "Poppins", sans-serif;
+}
+
+.swal-modal .swal-text {
+	text-align: center;
+	padding: 0 1rem;
+}
+
 .overlay {
 	color: black;
 	position: fixed;

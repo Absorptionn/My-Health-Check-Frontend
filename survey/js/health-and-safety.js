@@ -66,7 +66,7 @@ async function submit(assessment) {
 				buttons: false,
 			}).then(() => {
 				sessionStorage.clear();
-				window.location.href = "/survey/index.html";
+				window.location.href = "/index.html";
 			});
 		} else {
 			throw new Error("Invalid Surveyee");
