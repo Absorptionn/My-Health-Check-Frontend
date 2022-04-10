@@ -4,7 +4,8 @@ const user_email = sessionStorage.getItem("username");
 let edit_target = "";
 let reports = {};
 let users = {};
-let population = {};
+let student_population = {};
+let employee_population = {};
 let today = new Date();
 today = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
 let departments = [];
@@ -23,10 +24,10 @@ const month = [
 	"December",
 ];
 
-let selected_weeks = {};
 let sick_surveee_chart = {};
 let overtime_chart = {};
-let sick_department_chart = {};
+let sick_student_department_chart = {};
+let sick_employee_department_chart = {};
 let exposed_chart = {};
 let outside_province_chart = {};
 let outside_philippines_chart = {};
@@ -38,10 +39,12 @@ const close = document.querySelector(".fa-xmark");
 const months = document.querySelector(".months");
 const months_contents = document.querySelectorAll(".months-contents span");
 const weeks = document.querySelector(".weeks");
+let selected_weeks = weeks.querySelector(".weeks-contents span:first-child");
 const menu_icon = document.querySelector(".fa-square-pen");
 const menu_content = document.querySelector(".menu-content");
 const user_form = document.getElementById("user-form");
-const update_total = document.getElementById("update-total");
+const update_employee = document.getElementById("update-employee");
+const update_student = document.getElementById("update-student");
 const change_password = document.getElementById("change-password");
 const search = document.getElementById("search");
 const overlay = document.querySelector(".overlay");
@@ -50,14 +53,21 @@ const user_content = document.querySelector(".user-content");
 const create_edit = document.getElementById("create-edit");
 const create_edit_form = document.querySelector(".create-edit-form");
 const change_password_form = document.querySelector(".change-password-form");
-const update_total_form = document.querySelector(".update-total-form");
-const total_inputs = update_total_form.querySelectorAll("input[type='number']");
+const update_student_form = document.querySelector(".update-student-form");
+const student_total_inputs = update_student_form.querySelectorAll(
+	"input[type='number']"
+);
+const update_employee_form = document.querySelector(".update-employee-form");
+const employee_total_inputs = update_employee_form.querySelectorAll(
+	"input[type='number']"
+);
 const submit = document.getElementById("create-update");
 const cancel = document.querySelector(
 	".create-edit-form button[type='button']"
 );
 const update_admin = document.getElementById("update");
-const update_college = document.getElementById("update-college");
+const btn_update_employee = document.getElementById("btn-update-employee");
+const btn_update_student = document.getElementById("btn-update-student");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 const repeat_password = document.getElementById("repeat-password");
@@ -82,7 +92,8 @@ menu_icon.addEventListener("click", menu_icon_clicked);
 overlay.addEventListener("mousedown", overlay_clicked);
 submit.addEventListener("click", submit_clicked);
 update_admin.addEventListener("click", update_admin_clicked);
-update_college.addEventListener("click", update_college_clicked);
+btn_update_employee.addEventListener("click", btn_update_employee_clicked);
+btn_update_student.addEventListener("click", btn_update_student_clicked);
 eyes.forEach((eye) => eye.addEventListener("click", eye_clicked));
 download.addEventListener("click", download_data);
 window.addEventListener("click", window_clicked);
@@ -91,7 +102,8 @@ btn_users.addEventListener("click", users_clicked);
 cancel.addEventListener("click", cancel_clicked);
 search.addEventListener("keyup", search_keyup);
 user_form.addEventListener("click", user_form_clicked);
-update_total.addEventListener("click", update_total_clicked);
+update_student.addEventListener("click", update_student_clicked);
+update_employee.addEventListener("click", update_employee_clicked);
 change_password.addEventListener("click", change_password_clicked);
 
 function close_clicked(e) {
@@ -158,7 +170,7 @@ function months_contents_clicked(e) {
 
 	monthly_sick_count_surveyees(month_index + 1);
 	monthly_sick_surveyees(month_index + 1);
-	monthly_sick_department(month_index + 1);
+	monthly_sick_student_department(month_index + 1);
 	monthly_exposed(month_index + 1);
 	monthly_traveled(month_index + 1);
 	set_sickness_overtime(target_month, "Whole Month", 0, 0);
@@ -308,32 +320,58 @@ function weekly_sick_surveyees(current_month, start, end) {
 	sick_surveee_chart = new Chart(sickness, config);
 }
 
-function weekly_sick_department(current_month, start, end) {
-	if (sick_department_chart instanceof Chart) {
-		sick_department_chart.destroy();
+function weekly_sickness_per_department(current_month, start, end) {
+	if (sick_student_department_chart instanceof Chart) {
+		sick_student_department_chart.destroy();
 	}
-	let sick_count_department = document
-		.getElementById("sickness-department")
+	if (sick_employee_department_chart instanceof Chart) {
+		sick_employee_department_chart.destroy();
+	}
+	const sick_student_department = document
+		.getElementById("sick-student-department")
+		.getContext("2d");
+	const sick_employee_department = document
+		.getElementById("sick-employee-department")
 		.getContext("2d");
 
-	let values = {};
+	const student_values = {};
+	const employee_values = {};
 
 	let index = 0;
 	for (const department of departments) {
-		values[departments_abbreviations[index]] = 0;
+		student_values[departments_abbreviations[index]] = 0;
+		employee_values[departments_abbreviations[index]] = 0;
 		for (const surveyee of Object.keys(reports[department])) {
-			for (const assessment of reports[department][surveyee].assessments) {
-				const date = assessment.date.split("-");
-				const { month, day } = {
-					month: parseInt(date[1]),
-					day: parseInt(date[2]),
-				};
-				if (month === current_month && day >= start && day <= end) {
-					if (!assessment.experiences.includes("None of the above")) {
-						values[departments_abbreviations[index]]++;
-						break;
-					} else {
-						break;
+			if (reports[department][surveyee].information.position == "Student") {
+				for (const assessment of reports[department][surveyee].assessments) {
+					const date = assessment.date.split("-");
+					const { month, day } = {
+						month: parseInt(date[1]),
+						day: parseInt(date[2]),
+					};
+					if (month === current_month && day >= start && day <= end) {
+						if (!assessment.experiences.includes("None of the above")) {
+							student_values[departments_abbreviations[index]]++;
+							break;
+						} else {
+							break;
+						}
+					}
+				}
+			} else {
+				for (const assessment of reports[department][surveyee].assessments) {
+					const date = assessment.date.split("-");
+					const { month, day } = {
+						month: parseInt(date[1]),
+						day: parseInt(date[2]),
+					};
+					if (month === current_month && day >= start && day <= end) {
+						if (!assessment.experiences.includes("None of the above")) {
+							employee_values[departments_abbreviations[index]]++;
+							break;
+						} else {
+							break;
+						}
 					}
 				}
 			}
@@ -341,116 +379,207 @@ function weekly_sick_department(current_month, start, end) {
 		index++;
 	}
 
-	let checker = Object.values(values).reduce(
+	let checker = Object.values(student_values).reduce(
 		(prev_value, current_value) => prev_value + current_value
 	);
-
-	if (!checker) {
-		document.getElementById(
-			"sickness-department"
-		).parentNode.parentNode.style.display = "none";
-		return;
-	} else {
-		document.getElementById(
-			"sickness-department"
-		).parentNode.parentNode.style.display = "block";
-	}
-
-	const temp_np = values["NP"];
-	delete values["NP"];
-	values["NTP"] = temp_np;
-
-	const tooltip_labels = {};
-	Object.keys(values).forEach((value) => {
-		if (!values[value]) {
-			delete values[value];
-		} else {
-			tooltip_labels[value] = values[value];
-			if (population[value.toLowerCase()]) {
-				values[value] = (
-					(values[value] / population[value.toLowerCase()]) *
-					100
-				).toFixed(2);
-			} else {
-				values[value] = (
-					(values[value] /
-						Object.keys(reports["Non-teaching Personnel"]).length) *
-					100
-				).toFixed(2);
-			}
-		}
-	});
-
 	let not_mobile = true;
 	if (window.innerWidth <= 800 && window.innerHeight <= 900) {
 		not_mobile = false;
 	}
 
-	if (Object.keys(values).length <= 1) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "80px");
-	} else if (Object.keys(values).length <= 2) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "120px");
-	} else if (Object.keys(values).length <= 3) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "180px");
-	} else if (Object.keys(values).length <= 4) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "250px");
+	if (!checker) {
+		document.getElementById(
+			"sick-student-department"
+		).parentNode.parentNode.style.display = "none";
 	} else {
-		if (not_mobile) {
+		document.getElementById(
+			"sick-student-department"
+		).parentNode.parentNode.style.display = "block";
+
+		const tooltip_labels = {};
+		Object.keys(student_values).forEach((value) => {
+			if (!student_values[value]) {
+				delete student_values[value];
+			} else {
+				if (student_population[value.toLowerCase()]) {
+					tooltip_labels[value] = student_values[value];
+					student_values[value] = (
+						(student_values[value] / student_population[value.toLowerCase()]) *
+						100
+					).toFixed(2);
+				}
+			}
+		});
+
+		let student_values_length = Object.keys(student_values).length;
+		if (student_values_length <= 1) {
 			document
-				.getElementById("sickness-department")
-				.setAttribute("height", "400px");
+				.getElementById("sick-student-department")
+				.setAttribute("height", "80px");
+		} else if (student_values_length <= 2) {
+			document
+				.getElementById("sick-student-department")
+				.setAttribute("height", "120px");
+		} else if (student_values_length <= 3) {
+			document
+				.getElementById("sick-student-department")
+				.setAttribute("height", "180px");
+		} else if (student_values_length <= 4) {
+			document
+				.getElementById("sick-student-department")
+				.setAttribute("height", "250px");
 		} else {
-			document
-				.getElementById("sickness-department")
-				.setAttribute("height", "700px");
+			if (not_mobile) {
+				document
+					.getElementById("sick-student-department")
+					.setAttribute("height", "400px");
+			} else {
+				document
+					.getElementById("sick-student-department")
+					.setAttribute("height", "700px");
+			}
 		}
+
+		const config = set_bar(
+			Object.keys(student_values),
+			Object.values(student_values),
+			[
+				"#fdedf0",
+				"#f9cad1",
+				"#f6a6b2",
+				"#f28394",
+				"#ee5f75",
+				"#eb3b56",
+				"#e71838",
+				"#c4142f",
+				"#a01127",
+				"#7c0d1e",
+				"#590915",
+				"#35060d",
+				"#120204",
+			],
+			[
+				"black",
+				"black",
+				"black",
+				"black",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+			],
+			tooltip_labels,
+			false
+		);
+
+		sick_student_department_chart = new Chart(sick_student_department, config);
 	}
 
-	const config = set_bar(
-		Object.keys(values),
-		Object.values(values),
-		[
-			"#fdedf0",
-			"#f9cad1",
-			"#f6a6b2",
-			"#f28394",
-			"#ee5f75",
-			"#eb3b56",
-			"#e71838",
-			"#c4142f",
-			"#a01127",
-			"#7c0d1e",
-			"#590915",
-			"#35060d",
-			"#120204",
-		],
-		[
-			"black",
-			"black",
-			"black",
-			"black",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-		],
-		tooltip_labels
+	checker = Object.values(employee_values).reduce(
+		(prev_value, current_value) => prev_value + current_value
 	);
 
-	sick_department_chart = new Chart(sick_count_department, config);
+	if (!checker) {
+		document.getElementById(
+			"sick-employee-department"
+		).parentNode.parentNode.style.display = "none";
+	} else {
+		document.getElementById(
+			"sick-employee-department"
+		).parentNode.parentNode.style.display = "block";
+
+		const tooltip_labels = {};
+		Object.keys(employee_values).forEach((value) => {
+			if (!employee_values[value]) {
+				delete employee_values[value];
+			} else {
+				if (employee_population[value.toLowerCase()]) {
+					tooltip_labels[value] = employee_values[value];
+					employee_values[value] = (
+						(employee_values[value] /
+							employee_population[value.toLowerCase()]) *
+						100
+					).toFixed(2);
+				}
+			}
+		});
+
+		let employee_values_length = Object.keys(employee_values).length;
+		if (employee_values_length <= 1) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "80px");
+		} else if (employee_values_length <= 2) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "120px");
+		} else if (employee_values_length <= 3) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "180px");
+		} else if (employee_values_length <= 4) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "250px");
+		} else {
+			if (not_mobile) {
+				document
+					.getElementById("sick-employee-department")
+					.setAttribute("height", "400px");
+			} else {
+				document
+					.getElementById("sick-employee-department")
+					.setAttribute("height", "700px");
+			}
+		}
+
+		const config = set_bar(
+			Object.keys(employee_values),
+			Object.values(employee_values),
+			[
+				"#fdedf0",
+				"#f9cad1",
+				"#f6a6b2",
+				"#f28394",
+				"#ee5f75",
+				"#eb3b56",
+				"#e71838",
+				"#c4142f",
+				"#a01127",
+				"#7c0d1e",
+				"#590915",
+				"#35060d",
+				"#120204",
+			],
+			[
+				"black",
+				"black",
+				"black",
+				"black",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+			],
+			tooltip_labels,
+			true
+		);
+
+		sick_employee_department_chart = new Chart(
+			sick_employee_department,
+			config
+		);
+	}
 }
 
 function weekly_exposed(current_month, start, end) {
@@ -521,9 +650,6 @@ function weekly_exposed(current_month, start, end) {
 		document.getElementById("exposed").parentNode.parentNode.style.display =
 			"block";
 	}
-	const temp_np = is_exposed["NP"];
-	delete is_exposed["NP"];
-	is_exposed["NTP"] = temp_np;
 
 	Object.keys(is_exposed).forEach((value) => {
 		if (!is_exposed[value]) {
@@ -638,14 +764,6 @@ function weekly_traveled(current_month, start, end) {
 		document.getElementById("philippines").parentNode.parentNode.style.display =
 			"block";
 	}
-
-	let temp_np = outside_province["NP"];
-	delete outside_province["NP"];
-	outside_province["NTP"] = temp_np;
-
-	temp_np = outside_philippines["NP"];
-	delete outside_philippines["NP"];
-	outside_philippines["NTP"] = temp_np;
 
 	Object.keys(outside_province).forEach((key) => {
 		if (!outside_province[key]) {
@@ -899,29 +1017,52 @@ function monthly_sick_surveyees(current_month) {
 	sick_surveee_chart = new Chart(sickness, config);
 }
 
-function monthly_sick_department(current_month) {
-	if (sick_department_chart instanceof Chart) {
-		sick_department_chart.destroy();
+function monthly_sick_student_department(current_month) {
+	if (sick_student_department_chart instanceof Chart) {
+		sick_student_department_chart.destroy();
 	}
-	let sick_count_department = document
-		.getElementById("sickness-department")
+	if (sick_employee_department_chart instanceof Chart) {
+		sick_employee_department_chart.destroy();
+	}
+	const sick_student_department = document
+		.getElementById("sick-student-department")
+		.getContext("2d");
+	const sick_employee_department = document
+		.getElementById("sick-employee-department")
 		.getContext("2d");
 
-	let values = {};
+	const student_values = {};
+	const employee_values = {};
 
 	let index = 0;
 	for (const department of departments) {
-		values[departments_abbreviations[index]] = 0;
+		student_values[departments_abbreviations[index]] = 0;
+		employee_values[departments_abbreviations[index]] = 0;
 		for (const surveyee of Object.keys(reports[department])) {
-			for (const assessment of reports[department][surveyee].assessments) {
-				const date = assessment.date.split("-");
-				const month = parseInt(date[1]);
-				if (month === current_month) {
-					if (!assessment.experiences.includes("None of the above")) {
-						values[departments_abbreviations[index]]++;
-						break;
-					} else {
-						break;
+			if (reports[department][surveyee].information.position == "Student") {
+				for (const assessment of reports[department][surveyee].assessments) {
+					const date = assessment.date.split("-");
+					const month = parseInt(date[1]);
+					if (month === current_month) {
+						if (!assessment.experiences.includes("None of the above")) {
+							student_values[departments_abbreviations[index]]++;
+							break;
+						} else {
+							break;
+						}
+					}
+				}
+			} else {
+				for (const assessment of reports[department][surveyee].assessments) {
+					const date = assessment.date.split("-");
+					const month = parseInt(date[1]);
+					if (month === current_month) {
+						if (!assessment.experiences.includes("None of the above")) {
+							employee_values[departments_abbreviations[index]]++;
+							break;
+						} else {
+							break;
+						}
 					}
 				}
 			}
@@ -929,116 +1070,207 @@ function monthly_sick_department(current_month) {
 		index++;
 	}
 
-	let checker = Object.values(values).reduce(
+	let checker = Object.values(student_values).reduce(
 		(prev_value, current_value) => prev_value + current_value
 	);
-
-	if (!checker) {
-		document.getElementById(
-			"sickness-department"
-		).parentNode.parentNode.style.display = "none";
-		return;
-	} else {
-		document.getElementById(
-			"sickness-department"
-		).parentNode.parentNode.style.display = "block";
-	}
-
-	const temp_np = values["NP"];
-	delete values["NP"];
-	values["NTP"] = temp_np;
-
-	const tooltip_labels = {};
-	Object.keys(values).forEach((value) => {
-		if (!values[value]) {
-			delete values[value];
-		} else {
-			tooltip_labels[value] = values[value];
-			if (population[value.toLowerCase()]) {
-				values[value] = (
-					(values[value] / population[value.toLowerCase()]) *
-					100
-				).toFixed(2);
-			} else {
-				values[value] = (
-					(values[value] /
-						Object.keys(reports["Non-teaching Personnel"]).length) *
-					100
-				).toFixed(2);
-			}
-		}
-	});
-
 	let not_mobile = true;
 	if (window.innerWidth <= 800 && window.innerHeight <= 900) {
 		not_mobile = false;
 	}
 
-	if (Object.keys(values).length <= 1) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "80px");
-	} else if (Object.keys(values).length <= 2) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "120px");
-	} else if (Object.keys(values).length <= 3) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "180px");
-	} else if (Object.keys(values).length <= 4) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "250px");
+	if (!checker) {
+		document.getElementById(
+			"sick-student-department"
+		).parentNode.parentNode.style.display = "none";
 	} else {
-		if (not_mobile) {
+		document.getElementById(
+			"sick-student-department"
+		).parentNode.parentNode.style.display = "block";
+
+		const tooltip_labels = {};
+		Object.keys(student_values).forEach((value) => {
+			if (!student_values[value]) {
+				delete student_values[value];
+			} else {
+				if (student_population[value.toLowerCase()]) {
+					tooltip_labels[value] = student_values[value];
+					student_values[value] = (
+						(student_values[value] / student_population[value.toLowerCase()]) *
+						100
+					).toFixed(2);
+				}
+			}
+		});
+
+		let student_values_length = Object.keys(student_values).length;
+		if (student_values_length <= 1) {
 			document
-				.getElementById("sickness-department")
-				.setAttribute("height", "400px");
+				.getElementById("sick-student-department")
+				.setAttribute("height", "80px");
+		} else if (student_values_length <= 2) {
+			document
+				.getElementById("sick-student-department")
+				.setAttribute("height", "120px");
+		} else if (student_values_length <= 3) {
+			document
+				.getElementById("sick-student-department")
+				.setAttribute("height", "180px");
+		} else if (student_values_length <= 4) {
+			document
+				.getElementById("sick-student-department")
+				.setAttribute("height", "250px");
 		} else {
-			document
-				.getElementById("sickness-department")
-				.setAttribute("height", "700px");
+			if (not_mobile) {
+				document
+					.getElementById("sick-student-department")
+					.setAttribute("height", "400px");
+			} else {
+				document
+					.getElementById("sick-student-department")
+					.setAttribute("height", "700px");
+			}
 		}
+
+		const config = set_bar(
+			Object.keys(student_values),
+			Object.values(student_values),
+			[
+				"#fdedf0",
+				"#f9cad1",
+				"#f6a6b2",
+				"#f28394",
+				"#ee5f75",
+				"#eb3b56",
+				"#e71838",
+				"#c4142f",
+				"#a01127",
+				"#7c0d1e",
+				"#590915",
+				"#35060d",
+				"#120204",
+			],
+			[
+				"black",
+				"black",
+				"black",
+				"black",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+			],
+			tooltip_labels,
+			false
+		);
+
+		sick_student_department_chart = new Chart(sick_student_department, config);
 	}
 
-	const config = set_bar(
-		Object.keys(values),
-		Object.values(values),
-		[
-			"#fdedf0",
-			"#f9cad1",
-			"#f6a6b2",
-			"#f28394",
-			"#ee5f75",
-			"#eb3b56",
-			"#e71838",
-			"#c4142f",
-			"#a01127",
-			"#7c0d1e",
-			"#590915",
-			"#35060d",
-			"#120204",
-		],
-		[
-			"black",
-			"black",
-			"black",
-			"black",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-		],
-		tooltip_labels
+	checker = Object.values(employee_values).reduce(
+		(prev_value, current_value) => prev_value + current_value
 	);
 
-	sick_department_chart = new Chart(sick_count_department, config);
+	if (!checker) {
+		document.getElementById(
+			"sick-employee-department"
+		).parentNode.parentNode.style.display = "none";
+	} else {
+		document.getElementById(
+			"sick-employee-department"
+		).parentNode.parentNode.style.display = "block";
+
+		const tooltip_labels = {};
+		Object.keys(employee_values).forEach((value) => {
+			if (!employee_values[value]) {
+				delete employee_values[value];
+			} else {
+				if (employee_population[value.toLowerCase()]) {
+					tooltip_labels[value] = employee_values[value];
+					employee_values[value] = (
+						(employee_values[value] /
+							employee_population[value.toLowerCase()]) *
+						100
+					).toFixed(2);
+				}
+			}
+		});
+
+		let employee_values_length = Object.keys(employee_values).length;
+		if (employee_values_length <= 1) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "80px");
+		} else if (employee_values_length <= 2) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "120px");
+		} else if (employee_values_length <= 3) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "180px");
+		} else if (employee_values_length <= 4) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "250px");
+		} else {
+			if (not_mobile) {
+				document
+					.getElementById("sick-employee-department")
+					.setAttribute("height", "400px");
+			} else {
+				document
+					.getElementById("sick-employee-department")
+					.setAttribute("height", "700px");
+			}
+		}
+
+		const config = set_bar(
+			Object.keys(employee_values),
+			Object.values(employee_values),
+			[
+				"#fdedf0",
+				"#f9cad1",
+				"#f6a6b2",
+				"#f28394",
+				"#ee5f75",
+				"#eb3b56",
+				"#e71838",
+				"#c4142f",
+				"#a01127",
+				"#7c0d1e",
+				"#590915",
+				"#35060d",
+				"#120204",
+			],
+			[
+				"black",
+				"black",
+				"black",
+				"black",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+			],
+			tooltip_labels,
+			true
+		);
+
+		sick_employee_department_chart = new Chart(
+			sick_employee_department,
+			config
+		);
+	}
 }
 
 function monthly_exposed(current_month) {
@@ -1109,10 +1341,6 @@ function monthly_exposed(current_month) {
 		document.getElementById("exposed").parentNode.parentNode.style.display =
 			"block";
 	}
-
-	const temp_np = is_exposed["NP"];
-	delete is_exposed["NP"];
-	is_exposed["NTP"] = temp_np;
 
 	Object.keys(is_exposed).forEach((value) => {
 		if (!is_exposed[value]) {
@@ -1219,14 +1447,6 @@ function monthly_traveled(current_month) {
 		document.getElementById("philippines").parentNode.parentNode.style.display =
 			"block";
 	}
-
-	let temp_np = outside_province["NP"];
-	delete outside_province["NP"];
-	outside_province["NTP"] = temp_np;
-
-	temp_np = outside_philippines["NP"];
-	delete outside_philippines["NP"];
-	outside_philippines["NTP"] = temp_np;
 
 	Object.keys(outside_province).forEach((key) => {
 		if (!outside_province[key]) {
@@ -1383,7 +1603,7 @@ function weeks_contents_clicked(e) {
 
 	if (week_text_spans[0].innerText === "Today") {
 		sick_surveee_chart.destroy();
-		sick_department_chart.destroy();
+		sick_student_department_chart.destroy();
 		exposed_chart.destroy();
 		outside_province_chart.destroy();
 		outside_philippines_chart.destroy();
@@ -1398,7 +1618,7 @@ function weeks_contents_clicked(e) {
 	} else if (week_text_spans[0].innerText === "Whole Month") {
 		monthly_sick_count_surveyees(current_month);
 		monthly_sick_surveyees(current_month);
-		monthly_sick_department(current_month);
+		monthly_sick_student_department(current_month);
 		monthly_exposed(current_month);
 		monthly_traveled(current_month);
 		return;
@@ -1406,22 +1626,23 @@ function weeks_contents_clicked(e) {
 
 	weekly_sick_count_surveyees(current_month, start, end);
 	weekly_sick_surveyees(current_month, start, end);
-	weekly_sick_department(current_month, start, end);
+	weekly_sickness_per_department(current_month, start, end);
 	weekly_exposed(current_month, start, end);
 	weekly_traveled(current_month, start, end);
 }
 
-async function update_college_clicked(e) {
+async function btn_update_employee_clicked(e) {
 	e.preventDefault();
 	const input_population = {};
-	const is_confirm = update_total_form.reportValidity();
+	const is_confirm = update_employee_form.reportValidity();
 	if (is_confirm) {
-		for (const input of total_inputs) {
-			input_population[input.id] = input.value;
+		for (const input of employee_total_inputs) {
+			input_population[input.name] = input.value;
 		}
 
 		const result = await HMWADataService.update_population(
 			input_population,
+			"employee",
 			user_email
 		);
 
@@ -1430,7 +1651,7 @@ async function update_college_clicked(e) {
 				user_email
 			);
 			if (population_response && population_response.data) {
-				population = population_response.data;
+				employee_population = population_response.data.employee_population;
 			}
 
 			let week_text_spans = weeks.querySelectorAll(".weeks-text span");
@@ -1441,7 +1662,46 @@ async function update_college_clicked(e) {
 
 			await swal({
 				title: "Success!",
-				text: "College population update successful",
+				text: "Employee population update successful",
+				icon: "success",
+				buttons: false,
+				timer: 3000,
+			});
+		}
+	}
+}
+async function btn_update_student_clicked(e) {
+	e.preventDefault();
+	const input_population = {};
+	const is_confirm = update_student_form.reportValidity();
+	if (is_confirm) {
+		for (const input of student_total_inputs) {
+			input_population[input.name] = input.value;
+		}
+
+		const result = await HMWADataService.update_population(
+			input_population,
+			"student",
+			user_email
+		);
+
+		if (result && result.data.acknowledged) {
+			const population_response = await HMWADataService.get_population(
+				user_email
+			);
+			if (population_response && population_response.data) {
+				student_population = population_response.data.student_population;
+			}
+
+			let week_text_spans = weeks.querySelectorAll(".weeks-text span");
+			week_text_spans[0].innerText = "";
+			week_text_spans[1].innerText = "";
+
+			selected_weeks.click();
+
+			await swal({
+				title: "Success!",
+				text: "Student population update successful",
 				icon: "success",
 				buttons: false,
 				timer: 3000,
@@ -1453,21 +1713,31 @@ async function update_college_clicked(e) {
 function user_form_clicked(e) {
 	overlay.querySelector("#left").classList.remove("on-college");
 	create_edit_form.parentNode.classList.remove("hidden");
-	update_total_form.parentNode.classList.add("hidden");
+	update_employee_form.parentNode.classList.add("hidden");
+	update_student_form.parentNode.classList.add("hidden");
 	change_password_form.parentNode.classList.add("hidden");
 }
 
-async function update_total_clicked(e) {
+async function update_employee_clicked(e) {
 	overlay.querySelector("#left").classList.add("on-college");
 	create_edit_form.parentNode.classList.add("hidden");
-	update_total_form.parentNode.classList.remove("hidden");
+	update_employee_form.parentNode.classList.remove("hidden");
+	update_student_form.parentNode.classList.add("hidden");
+	change_password_form.parentNode.classList.add("hidden");
+}
+async function update_student_clicked(e) {
+	overlay.querySelector("#left").classList.add("on-college");
+	create_edit_form.parentNode.classList.add("hidden");
+	update_employee_form.parentNode.classList.add("hidden");
+	update_student_form.parentNode.classList.remove("hidden");
 	change_password_form.parentNode.classList.add("hidden");
 }
 
 function change_password_clicked(e) {
 	overlay.querySelector("#left").classList.remove("on-college");
 	create_edit_form.parentNode.classList.add("hidden");
-	update_total_form.parentNode.classList.add("hidden");
+	update_employee_form.parentNode.classList.add("hidden");
+	update_student_form.parentNode.classList.add("hidden");
 	change_password_form.parentNode.classList.remove("hidden");
 }
 
@@ -1659,6 +1929,8 @@ async function create_user() {
 		username: username.value,
 		password: "",
 	};
+	submit.disabled = true;
+	cancel.disabled = true;
 
 	if (password.value === repeat_password.value) {
 		user.password = repeat_password.value;
@@ -1669,6 +1941,8 @@ async function create_user() {
 	if (result && result.data) {
 		clear_user_inputs();
 		display_users();
+		submit.disabled = false;
+		cancel.disabled = false;
 		await swal({
 			title: "Success!",
 			text: "User creation successful",
@@ -1728,7 +2002,7 @@ async function sign_out_clicked(e) {
 			const result = await HMWADataService.logout(user_email);
 			if (result && result.data.acknowledged) {
 				sessionStorage.clear();
-				window.location.href = "/index.html";
+				window.location.href = "/dashboard/index.html";
 			}
 		}
 	}
@@ -1966,7 +2240,7 @@ let departments_abbreviations = [
 	"SOM",
 	"GS",
 	"IS",
-	"NP",
+	"NTP",
 ];
 
 let sicknesses = [
@@ -2133,7 +2407,8 @@ const set_bar = (
 	values,
 	background_color,
 	data_label_colors,
-	tooltip_labels
+	tooltip_labels,
+	is_employee
 ) => {
 	const data = {
 		labels: labels,
@@ -2173,14 +2448,18 @@ const set_bar = (
 					title: () => {},
 					label: function (context) {
 						let label = context.label;
-						if (label == "NTP") {
+						let value = context.formattedValue;
+						if (tooltip_labels[label] !== undefined) {
+							if (is_employee) {
+								return `${label}: ${tooltip_labels[label]} / ${
+									employee_population[label.toLowerCase()]
+								}`;
+							}
 							return `${label}: ${tooltip_labels[label]} / ${
-								Object.keys(reports["Non-teaching Personnel"]).length
+								student_population[label.toLowerCase()]
 							}`;
 						}
-						return `${label}: ${tooltip_labels[label]} / ${
-							population[label.toLowerCase()]
-						}`;
+						return `${label}: ${value}`;
 					},
 				},
 			},
@@ -2192,6 +2471,9 @@ const set_bar = (
 					weight: 400,
 				},
 				formatter: (value, context) => {
+					if (typeof context.dataset.data[context.dataIndex] == "number") {
+						return value;
+					}
 					return value + "%";
 				},
 				color: data_label_colors,
@@ -2379,10 +2661,6 @@ function set_colleges() {
 			"block";
 	}
 
-	const temp_np = values["NP"];
-	delete values["NP"];
-	values["NTP"] = temp_np;
-
 	Object.keys(values).forEach((value) => {
 		if (!values[value]) {
 			delete values[value];
@@ -2494,7 +2772,9 @@ function set_sickness_overtime(current_month, target, start, end) {
 						};
 						if (month === current_month && day === target_day) {
 							if (!assessment.experiences.includes("None of the above")) {
+								console.log(surveyee, "sick");
 								total_sickness++;
+
 								if (sick_surveyees_tooltip[day] === undefined) {
 									sick_surveyees_tooltip[day] = {};
 								}
@@ -2503,7 +2783,9 @@ function set_sickness_overtime(current_month, target, start, end) {
 								}
 								sick_surveyees_tooltip[day][department].push(surveyee);
 							} else {
+								console.log(surveyee, "healthy");
 								total_healthy++;
+
 								if (healthy_surveyees_tooltip[day] === undefined) {
 									healthy_surveyees_tooltip[day] = {};
 								}
@@ -2683,21 +2965,37 @@ function set_sickness_per_surveyees() {
 }
 
 function set_sickness_per_department() {
-	const sick_count_department = document
-		.getElementById("sickness-department")
+	const sick_student_department = document
+		.getElementById("sick-student-department")
+		.getContext("2d");
+	const sick_employee_department = document
+		.getElementById("sick-employee-department")
 		.getContext("2d");
 
-	const values = {};
+	const student_values = {};
+	const employee_values = {};
 
 	let index = 0;
 	for (const department of departments) {
-		values[departments_abbreviations[index]] = 0;
+		student_values[departments_abbreviations[index]] = 0;
+		employee_values[departments_abbreviations[index]] = 0;
 		for (const surveyee of Object.keys(reports[department])) {
-			for (const assessment of reports[department][surveyee].assessments) {
-				if (assessment.date === today) {
-					if (!assessment.experiences.includes("None of the above")) {
-						values[departments_abbreviations[index]]++;
-						break;
+			if (reports[department][surveyee].information.position == "Student") {
+				for (const assessment of reports[department][surveyee].assessments) {
+					if (assessment.date === today) {
+						if (!assessment.experiences.includes("None of the above")) {
+							student_values[departments_abbreviations[index]]++;
+							break;
+						}
+					}
+				}
+			} else {
+				for (const assessment of reports[department][surveyee].assessments) {
+					if (assessment.date === today) {
+						if (!assessment.experiences.includes("None of the above")) {
+							employee_values[departments_abbreviations[index]]++;
+							break;
+						}
 					}
 				}
 			}
@@ -2705,116 +3003,207 @@ function set_sickness_per_department() {
 		index++;
 	}
 
-	let checker = Object.values(values).reduce(
+	let checker = Object.values(student_values).reduce(
 		(prev_value, current_value) => prev_value + current_value
 	);
-
-	if (!checker) {
-		document.getElementById(
-			"sickness-department"
-		).parentNode.parentNode.style.display = "none";
-		return;
-	} else {
-		document.getElementById(
-			"sickness-department"
-		).parentNode.parentNode.style.display = "block";
-	}
-
-	const temp_np = values["NP"];
-	delete values["NP"];
-	values["NTP"] = temp_np;
-
-	const tooltip_labels = {};
-	Object.keys(values).forEach((value) => {
-		if (!values[value]) {
-			delete values[value];
-		} else {
-			tooltip_labels[value] = values[value];
-			if (population[value.toLowerCase()]) {
-				values[value] = (
-					(values[value] / population[value.toLowerCase()]) *
-					100
-				).toFixed(2);
-			} else {
-				values[value] = (
-					(values[value] /
-						Object.keys(reports["Non-teaching Personnel"]).length) *
-					100
-				).toFixed(2);
-			}
-		}
-	});
-
 	let not_mobile = true;
 	if (window.innerWidth <= 800 && window.innerHeight <= 900) {
 		not_mobile = false;
 	}
 
-	if (Object.keys(values).length <= 1) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "80px");
-	} else if (Object.keys(values).length <= 2) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "120px");
-	} else if (Object.keys(values).length <= 3) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "180px");
-	} else if (Object.keys(values).length <= 4) {
-		document
-			.getElementById("sickness-department")
-			.setAttribute("height", "250px");
+	if (!checker) {
+		document.getElementById(
+			"sick-student-department"
+		).parentNode.parentNode.style.display = "none";
 	} else {
-		if (not_mobile) {
+		document.getElementById(
+			"sick-student-department"
+		).parentNode.parentNode.style.display = "block";
+
+		const tooltip_labels = {};
+		Object.keys(student_values).forEach((value) => {
+			if (!student_values[value]) {
+				delete student_values[value];
+			} else {
+				tooltip_labels[value] = student_values[value];
+				if (student_population[value.toLowerCase()]) {
+					student_values[value] = (
+						(student_values[value] / student_population[value.toLowerCase()]) *
+						100
+					).toFixed(2);
+				}
+			}
+		});
+
+		let student_values_length = Object.keys(student_values).length;
+		if (student_values_length <= 1) {
 			document
-				.getElementById("sickness-department")
-				.setAttribute("height", "400px");
+				.getElementById("sick-student-department")
+				.setAttribute("height", "80px");
+		} else if (student_values_length <= 2) {
+			document
+				.getElementById("sick-student-department")
+				.setAttribute("height", "120px");
+		} else if (student_values_length <= 3) {
+			document
+				.getElementById("sick-student-department")
+				.setAttribute("height", "180px");
+		} else if (student_values_length <= 4) {
+			document
+				.getElementById("sick-student-department")
+				.setAttribute("height", "250px");
 		} else {
-			document
-				.getElementById("sickness-department")
-				.setAttribute("height", "700px");
+			if (not_mobile) {
+				document
+					.getElementById("sick-student-department")
+					.setAttribute("height", "400px");
+			} else {
+				document
+					.getElementById("sick-student-department")
+					.setAttribute("height", "700px");
+			}
 		}
+
+		const config = set_bar(
+			Object.keys(student_values),
+			Object.values(student_values),
+			[
+				"#fdedf0",
+				"#f9cad1",
+				"#f6a6b2",
+				"#f28394",
+				"#ee5f75",
+				"#eb3b56",
+				"#e71838",
+				"#c4142f",
+				"#a01127",
+				"#7c0d1e",
+				"#590915",
+				"#35060d",
+				"#120204",
+			],
+			[
+				"black",
+				"black",
+				"black",
+				"black",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+			],
+			tooltip_labels,
+			false
+		);
+
+		sick_student_department_chart = new Chart(sick_student_department, config);
 	}
 
-	const config = set_bar(
-		Object.keys(values),
-		Object.values(values),
-		[
-			"#fdedf0",
-			"#f9cad1",
-			"#f6a6b2",
-			"#f28394",
-			"#ee5f75",
-			"#eb3b56",
-			"#e71838",
-			"#c4142f",
-			"#a01127",
-			"#7c0d1e",
-			"#590915",
-			"#35060d",
-			"#120204",
-		],
-		[
-			"black",
-			"black",
-			"black",
-			"black",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-			"white",
-		],
-		tooltip_labels
+	checker = Object.values(employee_values).reduce(
+		(prev_value, current_value) => prev_value + current_value
 	);
 
-	sick_department_chart = new Chart(sick_count_department, config);
+	if (!checker) {
+		document.getElementById(
+			"sick-employee-department"
+		).parentNode.parentNode.style.display = "none";
+	} else {
+		document.getElementById(
+			"sick-employee-department"
+		).parentNode.parentNode.style.display = "block";
+
+		const tooltip_labels = {};
+		Object.keys(employee_values).forEach((value) => {
+			if (!employee_values[value]) {
+				delete employee_values[value];
+			} else {
+				if (employee_population[value.toLowerCase()]) {
+					tooltip_labels[value] = employee_values[value];
+					employee_values[value] = (
+						(employee_values[value] /
+							employee_population[value.toLowerCase()]) *
+						100
+					).toFixed(2);
+				}
+			}
+		});
+
+		let employee_values_length = Object.keys(employee_values).length;
+		if (employee_values_length <= 1) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "80px");
+		} else if (employee_values_length <= 2) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "120px");
+		} else if (employee_values_length <= 3) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "180px");
+		} else if (employee_values_length <= 4) {
+			document
+				.getElementById("sick-employee-department")
+				.setAttribute("height", "250px");
+		} else {
+			if (not_mobile) {
+				document
+					.getElementById("sick-employee-department")
+					.setAttribute("height", "400px");
+			} else {
+				document
+					.getElementById("sick-employee-department")
+					.setAttribute("height", "700px");
+			}
+		}
+
+		const config = set_bar(
+			Object.keys(employee_values),
+			Object.values(employee_values),
+			[
+				"#fdedf0",
+				"#f9cad1",
+				"#f6a6b2",
+				"#f28394",
+				"#ee5f75",
+				"#eb3b56",
+				"#e71838",
+				"#c4142f",
+				"#a01127",
+				"#7c0d1e",
+				"#590915",
+				"#35060d",
+				"#120204",
+			],
+			[
+				"black",
+				"black",
+				"black",
+				"black",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+				"white",
+			],
+			tooltip_labels,
+			true
+		);
+
+		sick_employee_department_chart = new Chart(
+			sick_employee_department,
+			config
+		);
+	}
 }
 
 function set_exposed_per_department() {
@@ -2857,10 +3246,6 @@ function set_exposed_per_department() {
 		document.getElementById("exposed").parentNode.parentNode.style.display =
 			"block";
 	}
-
-	const temp_np = values["NP"];
-	delete values["NP"];
-	values["NTP"] = temp_np;
 
 	Object.keys(is_exposed).forEach((value) => {
 		if (!is_exposed[value]) {
@@ -2955,14 +3340,6 @@ function set_traveled_per_department() {
 		document.getElementById("philippines").parentNode.parentNode.style.display =
 			"block";
 	}
-
-	const temp_np = outside_province["NP"];
-	delete outside_province["NP"];
-	outside_province["NTP"] = temp_np;
-
-	temp_np = outside_philippines["NP"];
-	delete outside_philippines["NP"];
-	outside_philippines["NTP"] = temp_np;
 
 	Object.keys(outside_province).forEach((key) => {
 		if (!outside_province[key]) {
@@ -3087,10 +3464,11 @@ function set_report_views() {
 
 	for (const department of departments) {
 		for (const surveyee of Object.keys(reports[department])) {
-			let index = 0;
 			let dates = "";
+			let assessment_length = reports[department][surveyee].assessments.length;
+			let index = assessment_length - 1;
 
-			if (reports[department][surveyee].assessments.length) {
+			if (assessment_length) {
 				reports[department][surveyee].assessments.forEach(
 					(assessment, index) => {
 						dates += `<span index="${index}">${assessment.date}</span>`;
@@ -3473,10 +3851,20 @@ function init_months_weeks() {
 
 	const population_response = await HMWADataService.get_population(user_email);
 	if (population_response && population_response.data) {
-		population = population_response.data;
+		if (population_response.data.student_population) {
+			student_population = population_response.data.student_population;
 
-		for (const input of total_inputs) {
-			input.value = population[input.id];
+			for (const input of student_total_inputs) {
+				input.value = student_population[input.name];
+			}
+		}
+
+		if (population_response.data.employee_population) {
+			employee_population = population_response.data.employee_population;
+
+			for (const input of employee_total_inputs) {
+				input.value = employee_population[input.name];
+			}
 		}
 	}
 

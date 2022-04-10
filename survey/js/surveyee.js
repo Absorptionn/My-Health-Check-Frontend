@@ -88,7 +88,6 @@ const btn_next = document.querySelector(".button#next");
 // Eventlisteners
 textarea.addEventListener("input", textarea_onchange);
 btn_next.addEventListener("click", btn_next_clicked);
-email.addEventListener("focusout", txt_email_focus_out);
 dropdowns.forEach((dropdown) =>
 	dropdown.addEventListener("change", dropdown_changed)
 );
@@ -134,18 +133,18 @@ function btn_next_clicked(e) {
 	sessionStorage.setItem("surveyee", surveyee);
 }
 
-async function txt_email_focus_out(e) {
-	const is_valid = email.checkValidity();
-	if (is_valid) {
-		const surveyee_email = email.value;
-		let surveyee = await HMWADataService.get_surveyee_information(
-			surveyee_email
-		);
-
-		if (surveyee && surveyee.status === 200) {
-			surveyee = surveyee.data;
-			lastname.value = surveyee.lastname;
-			firstname.value = surveyee.firstname;
+(async function () {
+	const params = new Proxy(new URLSearchParams(window.location.search), {
+		get: (searchParams, prop) => searchParams.get(prop),
+	});
+	try {
+		let user = JSON.parse(decodeURIComponent(window.atob(params.user)));
+		lastname.value = user.lastname;
+		firstname.value = user.firstname;
+		email.value = user.email;
+		let surveyee = await HMWADataService.get_surveyee_information(user.email);
+		surveyee = surveyee.data;
+		if (surveyee) {
 			middlename.value = surveyee.middlename;
 			sex.value = surveyee.sex;
 			age.value = surveyee.age;
@@ -178,38 +177,46 @@ async function txt_email_focus_out(e) {
 				course.innerHTML = html;
 			}
 		}
-	}
-}
+	} catch (e) {
+		const surveyee = JSON.parse(sessionStorage.getItem("surveyee"));
+		if (surveyee) {
+			lastname.value = surveyee.lastname;
+			firstname.value = surveyee.firstname;
+			email.value = surveyee.email;
+			middlename.value = surveyee.middlename;
+			sex.value = surveyee.sex;
+			age.value = surveyee.age;
+			contact_number.value = surveyee.contact_number;
+			address.value = surveyee.address;
+			college.value = surveyee.college;
+			position.value = surveyee.position;
 
-(function () {
-	const surveyee = JSON.parse(sessionStorage.getItem("surveyee"));
-	if (surveyee) {
-		lastname.value = surveyee.lastname;
-		middlename.value = surveyee.middlename;
-		firstname.value = surveyee.firstname;
-		sex.value = surveyee.sex;
-		age.value = surveyee.age;
-		contact_number.value = surveyee.contact_number;
-		email.value = surveyee.email;
-		address.value = surveyee.address;
-		college.value = surveyee.college;
-		position.value = surveyee.position;
-
-		dropdowns.forEach((dropdown) => dropdown.classList.remove("unselected"));
-		if (
-			surveyee.college !== "Integrated School" &&
-			surveyee.college !== "Non-teaching Personnel"
-		) {
-			course.parentNode.classList.remove("disabled");
-			course.disabled = false;
-			course.classList.remove("unselected");
-			let html =
-				"<option disabled selected value hidden>-- Select program --</option>";
-			for (const course of courses[surveyee.college]) {
-				html += `<option value='${course}'>${course}</option>`;
+			dropdowns.forEach((dropdown) => dropdown.classList.remove("unselected"));
+			if (
+				surveyee.college !== "Integrated School" &&
+				surveyee.college !== "Non-teaching Personnel"
+			) {
+				course.parentNode.classList.remove("disabled");
+				course.disabled = false;
+				course.classList.remove("unselected");
+				let html =
+					"<option disabled selected value hidden>-- Select program --</option>";
+				for (const course of courses[surveyee.college]) {
+					html += `<option value='${course}'>${course}</option>`;
+				}
+				course.innerHTML = html;
+				course.value = surveyee.course;
 			}
-			course.innerHTML = html;
-			course.value = surveyee.course;
+		} else {
+			btn_next.remove();
+			swal({
+				icon: "error",
+				title: "Error",
+				text: "Surveyee Unauthorized",
+				buttons: false,
+			}).then(() => {
+				window.location.href = "http://localhost:5000/api/v1/hmwa/auth/google";
+			});
 		}
 	}
 })();

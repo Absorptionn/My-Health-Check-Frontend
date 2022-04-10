@@ -138,11 +138,16 @@ body::after {
 	padding: 0 4rem;
 }
 
-.update-total-form {
-	max-height: 48%;
+.update-employee-form {
+	max-height: 40.1%;
 }
 
-.update-total-form > div {
+.update-student-form {
+	max-height: 43%;
+}
+
+.update-employee-form > div,
+.update-student-form > div {
 	overflow: hidden scroll;
 	display: flex;
 	flex-flow: column nowrap;
@@ -151,7 +156,8 @@ body::after {
 	gap: 1.3rem;
 }
 
-.update-total-form button {
+.update-employee-form button,
+.update-student-form button {
 	margin-top: 0.8rem !important;
 	margin: 0 3.4rem;
 }
@@ -162,7 +168,8 @@ input[type="number"]::-webkit-outer-spin-button {
 	margin: 0;
 }
 
-.update-total-form,
+.update-employee-form,
+.update-student-form,
 .change-password-form,
 .create-edit-form {
 	display: flex;
@@ -170,7 +177,8 @@ input[type="number"]::-webkit-outer-spin-button {
 	gap: 1.3rem;
 }
 
-.update-total-form .form-group,
+.update-employee-form .form-group,
+.update-student-form .form-group,
 .change-password-form .form-group,
 .create-edit-form .form-group {
 	position: relative;
@@ -178,7 +186,8 @@ input[type="number"]::-webkit-outer-spin-button {
 	flex-flow: column nowrap;
 }
 
-.update-total-form .form-group i,
+.update-employee-form .form-group i,
+.update-student-form .form-group i,
 .change-password-form .form-group i,
 .create-edit-form .form-group i {
 	font-size: 1.2rem;
@@ -189,7 +198,8 @@ input[type="number"]::-webkit-outer-spin-button {
 	color: gray;
 }
 
-.update-total-form .form-group label,
+.update-employee-form .form-group label,
+.update-student-form .form-group label,
 .change-password-form .form-group label,
 .create-edit-form .form-group label {
 	font-size: 1.5rem;
@@ -200,8 +210,10 @@ input[type="number"]::-webkit-outer-spin-button {
 	transform: translateX(1.5px);
 }
 
-.update-total-form .text-input:focus,
-.update-total-form .text-input:active,
+.update-employee-form .text-input:focus,
+.update-employee-form .text-input:active,
+.update-student-form .text-input:focus,
+.update-student-form .text-input:active,
 .change-password-form .text-input:focus,
 .change-password-form .text-input:active,
 .create-edit-form .text-input:focus,
@@ -516,7 +528,6 @@ main {
 	color: black;
 	z-index: 4;
 	font-family: "Poppins", sans-serif;
-
 }
 
 .months-text.active,
@@ -1026,7 +1037,12 @@ footer #css {
 }
 footer #medical {
 	background-size: 100%;
-	background-image: url(../resources/medical_center.png);
+	border-radius: 100%;
+	width: 7.6rem;
+	height: 7.6rem;
+	background-color: white;
+	background-position: 0.5px 4px;
+	background-image: url(../resources/uhs.png);
 }
 
 footer .links {
@@ -1052,11 +1068,13 @@ footer .links {
 		padding: 0 3rem;
 	}
 
-	.update-total-form {
+	.update-employee-form,
+	.update-student-form {
 		max-height: 45%;
 	}
 
-	.update-total-form > div {
+	.update-employee-form > div,
+	.update-student-form > div {
 		padding: 0.5rem 3.4rem 1rem 3.4rem;
 	}
 
@@ -1125,7 +1143,8 @@ footer .links {
 		padding: 0 3rem;
 	}
 
-	.update-total-form {
+	.update-employee-form,
+	.update-student-form {
 		max-height: 58%;
 	}
 
@@ -1194,7 +1213,8 @@ footer .links {
 		margin-top: 0rem;
 	}
 
-	.update-total-form {
+	.update-employee-form,
+	.update-student-form {
 		max-height: 100%;
 	}
 

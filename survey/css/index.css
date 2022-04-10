@@ -301,6 +301,7 @@ footer .collaboration {
 	display: flex;
 	gap: 3.5rem;
 	justify-content: center;
+	align-items: center;
 	width: 80%;
 	height: 40%;
 }
@@ -323,7 +324,12 @@ footer #css {
 }
 footer #medical {
 	background-size: 100%;
-	background-image: url(../resources/medical_center.png);
+	border-radius: 100%;
+	width: 7.6rem;
+	height: 7.6rem;
+	background-color: white;
+	background-position: .5px 4px;
+	background-image: url(../resources/uhs.png);
 }
 
 footer .links {

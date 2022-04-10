@@ -5,8 +5,10 @@ class HMWADataService {
 		return http.get("/population", { params: { username } });
 	}
 
-	static update_population(population, username) {
-		return http.put("/population", population, { params: { username } });
+	static update_population(population, target, username) {
+		return http.put("/population", population, {
+			params: { username, target },
+		});
 	}
 
 	static create_user(user, username) {
@@ -18,7 +20,6 @@ class HMWADataService {
 					title: "Error",
 					text: "User already exists",
 					buttons: false,
-					timer: 3000,
 				});
 			});
 	}
@@ -44,7 +45,6 @@ class HMWADataService {
 					text: "Incorrect old password",
 					icon: "error",
 					buttons: false,
-					timer: 3000,
 				});
 			});
 	}
@@ -64,7 +64,6 @@ class HMWADataService {
 				title: "Error",
 				text: error.message,
 				buttons: false,
-				timer: 3000,
 			});
 		});
 	}
@@ -79,7 +78,6 @@ class HMWADataService {
 						title: "Unauthorized",
 						text: "Please sign in first",
 						buttons: false,
-						timer: 3000,
 					});
 				} else {
 					swal({
@@ -87,7 +85,6 @@ class HMWADataService {
 						title: "Error",
 						text: error.message,
 						buttons: false,
-						timer: 3000,
 					});
 				}
 			});
@@ -108,7 +105,6 @@ class HMWADataService {
 					title: "Error",
 					text: error.message,
 					buttons: false,
-					timer: 3000,
 				});
 			});
 	}

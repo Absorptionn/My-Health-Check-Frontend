@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="./resources/favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>MHC Survey | AUF</title>
+</head>
+
+<body>
+    <header class="h-center" id="header">
+        <h1 id="title">AUF MyHealthCheck</h1>
+        <h2 id="description">Tell us about yourself?</h2>
+    </header>
+
+    <main class="h-center" id="main">
+        <form class="form" id="form" action="/survey/health-and-safety.html">
+            <div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="text-input" placeholder="Enter your auf email"
+                        pattern="^\w+[-._]*\w*@(auf[.]edu[.]ph)$" required readonly/>
+                </div>
+                <div class="form-group dropdown-parent">
+                    <label for="position">AUF</label>
+                    <select id="position" name="position" class="dropdown-input unselected" required>
+                        <option disabled selected value hidden>-- Select status --</option>
+                        <option value="Employee">Employee</option>
+                        <option value="Student">Student</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last name</label>
+                    <input type="text" id="lastname" name="lastname" class="text-input"
+                        placeholder="Enter your last name" required readonly/>
+                </div>
+                <div class="form-group">
+                    <label for="firstname">First name</label>
+                    <input type="text" id="firstname" name="firstname" class="text-input"
+                        placeholder="Enter your first name" required readonly />
+                </div>
+                <div class="form-group">
+                    <label for="middlename">Middle name (optional)</label>
+                    <input type="text" id="middlename" name="middlename" class="text-input"
+                        placeholder="Enter your middle name" />
+                </div>
+                <div class="form-group dropdown-parent">
+                    <label for="sex">Sex</label>
+                    <select id="sex" name="sex" class="dropdown-input unselected" required>
+                        <option disabled selected value hidden>-- Select sex --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" class="text-input" min='0' max='99'
+                        placeholder="Enter your age" required />
+                </div>
+                <div class="form-group ">
+                    <label for="tel">Contact Number</label>
+                    <input type="tel" id="tel" name="tel" class="text-input" placeholder="Enter your contact number"
+                        pattern="[0-9]{11}" required />
+                </div>
+                <div class="form-group ">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" class="textarea-input" placeholder="Enter your address"
+                        rows="2" required></textarea>
+                </div>
+                <div class="form-group dropdown-parent">
+                    <label for="college">College/Unit/Department</label>
+                    <select id="college" name="college" class="dropdown-input unselected" required>
+                        <option disabled selected value hidden>-- Select college/unit/department --</option>
+                        <option value="College of Allied Medical Professions">College of Allied Medical Professions
+                        </option>
+                        <option value="College of Arts and Sciences">College of Arts and Sciences</option>
+                        <option value="College of Business and Accountancy">College of Business and Accountancy</option>
+                        <option value="College of Computer Studies">College of Computer Studies</option>
+                        <option value="College of Criminal Justice Education">College of Criminal Justice Education
+                        </option>
+                        <option value="College of Engineering and Architecture">College of Engineering and Architecture
+                        </option>
+                        <option value="College of Education">College of Education</option>
+                        <option value="College of Nursing">College of Nursing</option>
+                        <option value="School of Law">School of Law</option>
+                        <option value="School of Medicine">School of Medicine</option>
+                        <option value="Graduate School">Graduate School</option>
+                        <option value="Integrated School">Integrated School</option>
+                        <option value="Non-teaching Personnel">Non-teaching Personnel</option>
+                    </select>
+                </div>
+                <div class="form-group dropdown-parent disabled">
+                    <label for="course">Program</label>
+                    <select id="course" name="course" class="dropdown-input unselected" required disabled>
+                        <option disabled selected value hidden>-- Select program --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group next">
+                <button type="submit" class="button" id="next">
+                    <span>next&nbsp;</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <footer id="footer">
+        <div class="collaboration">
+            <div class="logo" id="auf"></div>
+            <div class="logo" id="css"></div>
+            <div class="logo" id="medical"></div>
+        </div>
+        <div class="links">
+            <a href="https://www.auf.edu.ph/modules.php?n=Home" target="_blank">www.auf.edu.ph</a>
+            <span>ccs@auf.edu.ph</span>
+            <span>uhs@auf.edu.ph</span>
+        </div>
+    </footer>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="module" src="./js/surveyee.js"></script>
+
+</html>

@@ -1,6 +1,7 @@
 import http from "./http-common.js";
 
 class HMWADataService {
+
 	static get_surveyee_information(email) {
 		return http
 			.get("/surveyee/information", { params: { email } })

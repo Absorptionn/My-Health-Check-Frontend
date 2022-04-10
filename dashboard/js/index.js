@@ -112,7 +112,7 @@ async function submit(e) {
 				return overlay.classList.remove("hidden");
 			}
 			sessionStorage.setItem("username", user.username);
-			window.location.href = "/dashboard.html";
+			window.location.href = "/dashboard/dashboard.html";
 		} else {
 			submit_button.disabled = false;
 			if (!result.data && user.username === "Admin") {

@@ -29,7 +29,8 @@
             <div class="menu">
                 <div class="menu-content hidden">
                     <span class="menu-text" id="user-form">User form</span>
-                    <span class="menu-text" id="update-total">Update total population</span>
+                    <span class="menu-text" id="update-employee">Update employee population</span>
+                    <span class="menu-text" id="update-student">Update student population</span>
                     <span class="menu-text" id="change-password">Change password</span>
                 </div>
                 <i class="fa-solid fa-square-pen"></i>
@@ -65,71 +66,144 @@
                     </form>
                 </div>
                 <div class="form-container hidden">
-                    <h1>Update Population</h1>
-                    <form class="update-total-form">
+                    <h1>Update Employee Population</h1>
+                    <form class="update-employee-form">
                         <div>
                             <div class="form-group">
                                 <label for="camp">CAMP</label>
-                                <input type="number" id="camp" name="camp" class="text-input"
-                                    placeholder="Enter CAMP population" min="0" value="0" required />
+                                <input type="number" name="camp" class="text-input" placeholder="Enter CAMP population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="cas">CAS</label>
-                                <input type="number" id="cas" name="cas" class="text-input"
-                                    placeholder="Enter CAS population" min="0" value="0" required />
+                                <input type="number" name="cas" class="text-input" placeholder="Enter CAS population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="cba">CBA</label>
-                                <input type="number" id="cba" name="cba" class="text-input"
-                                    placeholder="Enter CBA population" min="0" value="0" required />
+                                <input type="number" name="cba" class="text-input" placeholder="Enter CBA population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="ccs">CCS</label>
-                                <input type="number" id="ccs" name="ccs" class="text-input"
-                                    placeholder="Enter CCS population" min="0" value="0" required />
+                                <input type="number" name="ccs" class="text-input" placeholder="Enter CCS population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="ccje">CCJE</label>
-                                <input type="number" id="ccje" name="ccje" class="text-input"
-                                    placeholder="Enter CCJE population" min="0" value="0" required />
+                                <input type="number" name="ccje" class="text-input" placeholder="Enter CCJE population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="cea">CEA</label>
-                                <input type="number" id="cea" name="cea" class="text-input"
-                                    placeholder="Enter CEA population" min="0" value="0" required />
+                                <input type="number" name="cea" class="text-input" placeholder="Enter CEA population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="coe">COE</label>
-                                <input type="number" id="coe" name="coe" class="text-input"
-                                    placeholder="Enter COE population" min="0" value="0" required />
+                                <input type="number" name="coe" class="text-input" placeholder="Enter COE population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="con">CON</label>
-                                <input type="number" id="con" name="con" class="text-input"
-                                    placeholder="Enter CON population" min="0" value="0" required />
+                                <input type="number" name="con" class="text-input" placeholder="Enter CON population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="sol">SOL</label>
-                                <input type="number" id="sol" name="sol" class="text-input"
-                                    placeholder="Enter SOL population" min="0" value="0" required />
+                                <input type="number" name="sol" class="text-input" placeholder="Enter SOL population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="som">SOM</label>
-                                <input type="number" id="som" name="som" class="text-input"
-                                    placeholder="Enter SOM population" min="0" value="0" required />
+                                <input type="number" name="som" class="text-input" placeholder="Enter SOM population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="gs">GS</label>
-                                <input type="number" id="gs" name="gs" class="text-input"
-                                    placeholder="Enter GS population" min="0" value="0" required />
+                                <input type="number" name="gs" class="text-input" placeholder="Enter GS population"
+                                    min="0" value="0" required />
                             </div>
                             <div class="form-group">
                                 <label for="is">IS</label>
-                                <input type="number" id="is" name="is" class="text-input"
-                                    placeholder="Enter IS population" min="0" value="0" required />
+                                <input type="number" name="is" class="text-input" placeholder="Enter IS population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="ntp">NTP</label>
+                                <input type="number" name="ntp" class="text-input" placeholder="Enter IS population"
+                                    min="0" value="0" required />
                             </div>
                         </div>
-                        <button type="submit" class="button" id="update-college">update</button>
+                        <button type="submit" class="button" id="btn-update-employee">update</button>
+                    </form>
+                </div>
+                <div class="form-container hidden">
+                    <h1>Update Student Population</h1>
+                    <form class="update-student-form">
+                        <div>
+                            <div class="form-group">
+                                <label for="camp">CAMP</label>
+                                <input type="number" name="camp" class="text-input" placeholder="Enter CAMP population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="cas">CAS</label>
+                                <input type="number" name="cas" class="text-input" placeholder="Enter CAS population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="cba">CBA</label>
+                                <input type="number" name="cba" class="text-input" placeholder="Enter CBA population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="ccs">CCS</label>
+                                <input type="number" name="ccs" class="text-input" placeholder="Enter CCS population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="ccje">CCJE</label>
+                                <input type="number" name="ccje" class="text-input" placeholder="Enter CCJE population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="cea">CEA</label>
+                                <input type="number" name="cea" class="text-input" placeholder="Enter CEA population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="coe">COE</label>
+                                <input type="number" name="coe" class="text-input" placeholder="Enter COE population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="con">CON</label>
+                                <input type="number" name="con" class="text-input" placeholder="Enter CON population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="sol">SOL</label>
+                                <input type="number" name="sol" class="text-input" placeholder="Enter SOL population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="som">SOM</label>
+                                <input type="number" name="som" class="text-input" placeholder="Enter SOM population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="gs">GS</label>
+                                <input type="number" name="gs" class="text-input" placeholder="Enter GS population"
+                                    min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="is">IS</label>
+                                <input type="number" name="is" class="text-input" placeholder="Enter IS population"
+                                    min="0" value="0" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="button" id="btn-update-student">update</button>
                     </form>
                 </div>
                 <div class="form-container hidden">
@@ -193,7 +267,7 @@
             <i class="fa-solid fa-users-gear"></i>
         </div>
         <div>
-            <h1 id="title">AUF My Health Check</h1>
+            <h1 id="title">AUF MyHealthCheck</h1>
             <h2 id="description">Dashboard</h2>
         </div>
         <div class="hidden" id="sign_out">
@@ -284,9 +358,16 @@
 
             <div class="card bar">
                 <div>
-                    <canvas id="sickness-department"></canvas>
+                    <canvas id="sick-student-department"></canvas>
                 </div>
-                <h1 class="description">Sickness per Departments</h1>
+                <h1 class="description">Sick Student per Departments</h1>
+            </div>
+
+            <div class="card bar">
+                <div>
+                    <canvas id="sick-employee-department"></canvas>
+                </div>
+                <h1 class="description">Sick Employee per Departments</h1>
             </div>
 
             <div class="view">
