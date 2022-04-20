@@ -156,7 +156,7 @@ form .dropdown-input {
 
 form .dropdown-input.unselected {
 	color: gray;
-	box-shadow: none
+	box-shadow: none;
 }
 
 form input[type="number"] {
@@ -325,10 +325,10 @@ footer #css {
 footer #medical {
 	background-size: 100%;
 	border-radius: 100%;
-	width: 7.6rem;
-	height: 7.6rem;
+	width: 7rem;
+	height: 7rem;
 	background-color: white;
-	background-position: .5px 4px;
+	background-position: 0.5px 4px;
 	background-image: url(../resources/uhs.png);
 }
 
@@ -342,7 +342,7 @@ footer .links {
 	color: white;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1440px) {
 	.h-center {
 		max-width: 60%;
 	}
@@ -351,8 +351,22 @@ footer .links {
 		width: 60%;
 	}
 }
+@media (max-width: 1024px) {
+	.h-center {
+		max-width: 65%;
+	}
 
-@media (max-width: 900px) {
+	footer {
+		width: 60%;
+	}
+
+	footer #medical {
+		width: 6rem;
+		height: 6rem;
+	}
+}
+
+@media (max-width: 768px) {
 	.h-center {
 		max-width: 75%;
 	}
@@ -360,6 +374,7 @@ footer .links {
 	footer {
 		width: 85%;
 	}
+
 }
 
 @media (max-width: 700px) {
@@ -382,6 +397,14 @@ footer .links {
 
 	footer .links {
 		flex-flow: column nowrap;
+	}
+}
+
+@media (max-width: 500px) {
+	footer #medical {
+		width: 5rem;
+		height: 5rem;
+		background-position: 0.5px 2.3px;
 	}
 }
 

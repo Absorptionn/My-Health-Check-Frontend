@@ -170,7 +170,7 @@ function months_contents_clicked(e) {
 
 	monthly_sick_count_surveyees(month_index + 1);
 	monthly_sick_surveyees(month_index + 1);
-	monthly_sick_student_department(month_index + 1);
+	monthly_sick_per_department(month_index + 1);
 	monthly_exposed(month_index + 1);
 	monthly_traveled(month_index + 1);
 	set_sickness_overtime(target_month, "Whole Month", 0, 0);
@@ -320,7 +320,7 @@ function weekly_sick_surveyees(current_month, start, end) {
 	sick_surveee_chart = new Chart(sickness, config);
 }
 
-function weekly_sickness_per_department(current_month, start, end) {
+function weekly_sick_per_department(current_month, start, end) {
 	if (sick_student_department_chart instanceof Chart) {
 		sick_student_department_chart.destroy();
 	}
@@ -1017,7 +1017,7 @@ function monthly_sick_surveyees(current_month) {
 	sick_surveee_chart = new Chart(sickness, config);
 }
 
-function monthly_sick_student_department(current_month) {
+function monthly_sick_per_department(current_month) {
 	if (sick_student_department_chart instanceof Chart) {
 		sick_student_department_chart.destroy();
 	}
@@ -1604,6 +1604,7 @@ function weeks_contents_clicked(e) {
 	if (week_text_spans[0].innerText === "Today") {
 		sick_surveee_chart.destroy();
 		sick_student_department_chart.destroy();
+		sick_employee_department_chart.destroy();
 		exposed_chart.destroy();
 		outside_province_chart.destroy();
 		outside_philippines_chart.destroy();
@@ -1618,7 +1619,7 @@ function weeks_contents_clicked(e) {
 	} else if (week_text_spans[0].innerText === "Whole Month") {
 		monthly_sick_count_surveyees(current_month);
 		monthly_sick_surveyees(current_month);
-		monthly_sick_student_department(current_month);
+		monthly_sick_per_department(current_month);
 		monthly_exposed(current_month);
 		monthly_traveled(current_month);
 		return;
@@ -1626,7 +1627,7 @@ function weeks_contents_clicked(e) {
 
 	weekly_sick_count_surveyees(current_month, start, end);
 	weekly_sick_surveyees(current_month, start, end);
-	weekly_sickness_per_department(current_month, start, end);
+	weekly_sick_per_department(current_month, start, end);
 	weekly_exposed(current_month, start, end);
 	weekly_traveled(current_month, start, end);
 }
@@ -2002,7 +2003,7 @@ async function sign_out_clicked(e) {
 			const result = await HMWADataService.logout(user_email);
 			if (result && result.data.acknowledged) {
 				sessionStorage.clear();
-				window.location.href = "/dashboard/index.html";
+				window.location.href = "/index.html";
 			}
 		}
 	}
@@ -2227,7 +2228,7 @@ function surveyee_clicked(e, surveyee) {
 	}
 }
 
-let departments_abbreviations = [
+const departments_abbreviations = [
 	"CAMP",
 	"CAS",
 	"CBA",
@@ -2243,7 +2244,7 @@ let departments_abbreviations = [
 	"NTP",
 ];
 
-let sicknesses = [
+const sicknesses = [
 	"Fever",
 	"Dry cough",
 	"Fatigue",
@@ -2772,7 +2773,6 @@ function set_sickness_overtime(current_month, target, start, end) {
 						};
 						if (month === current_month && day === target_day) {
 							if (!assessment.experiences.includes("None of the above")) {
-								console.log(surveyee, "sick");
 								total_sickness++;
 
 								if (sick_surveyees_tooltip[day] === undefined) {
@@ -2783,7 +2783,6 @@ function set_sickness_overtime(current_month, target, start, end) {
 								}
 								sick_surveyees_tooltip[day][department].push(surveyee);
 							} else {
-								console.log(surveyee, "healthy");
 								total_healthy++;
 
 								if (healthy_surveyees_tooltip[day] === undefined) {
@@ -3025,8 +3024,8 @@ function set_sickness_per_department() {
 			if (!student_values[value]) {
 				delete student_values[value];
 			} else {
-				tooltip_labels[value] = student_values[value];
 				if (student_population[value.toLowerCase()]) {
+					tooltip_labels[value] = student_values[value];
 					student_values[value] = (
 						(student_values[value] / student_population[value.toLowerCase()]) *
 						100

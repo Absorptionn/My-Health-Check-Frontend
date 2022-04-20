@@ -1015,6 +1015,7 @@ footer .collaboration {
 	display: flex;
 	gap: 3.5rem;
 	justify-content: center;
+	align-items: center;
 	width: 80%;
 	height: 40%;
 }
@@ -1120,6 +1121,11 @@ footer .links {
 	footer #auf {
 		width: 14%;
 	}
+
+	footer #medical {
+		width: 6rem;
+		height: 6rem;
+	}
 }
 
 @media (max-width: 800px) {
@@ -1154,6 +1160,10 @@ footer .links {
 
 	footer {
 		width: 100%;
+	}
+	footer #medical {
+		width: 7rem;
+		height: 7rem;
 	}
 }
 
@@ -1255,6 +1265,11 @@ footer .links {
 
 	footer .links {
 		flex-flow: column nowrap;
+	}
+	footer #medical {
+		width: 6.4rem;
+		height: 6.4rem;
+		background-position: 0.5px 2.5px;
 	}
 }
 
