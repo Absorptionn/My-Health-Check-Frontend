@@ -39,7 +39,7 @@ const close = document.querySelector(".fa-xmark");
 const months = document.querySelector(".months");
 const months_contents = document.querySelectorAll(".months-contents span");
 const weeks = document.querySelector(".weeks");
-let selected_weeks = weeks.querySelector(".weeks-contents span:first-child");
+let selected_weeks = "";
 const menu_icon = document.querySelector(".fa-square-pen");
 const menu_content = document.querySelector(".menu-content");
 const user_form = document.getElementById("user-form");
@@ -1637,6 +1637,7 @@ async function btn_update_employee_clicked(e) {
 	const input_population = {};
 	const is_confirm = update_employee_form.reportValidity();
 	if (is_confirm) {
+		btn_update_employee.disabled = true;
 		for (const input of employee_total_inputs) {
 			input_population[input.name] = input.value;
 		}
@@ -1660,6 +1661,7 @@ async function btn_update_employee_clicked(e) {
 			week_text_spans[1].innerText = "";
 
 			selected_weeks.click();
+			btn_update_employee.disabled = false;
 
 			await swal({
 				title: "Success!",
@@ -1676,6 +1678,7 @@ async function btn_update_student_clicked(e) {
 	const input_population = {};
 	const is_confirm = update_student_form.reportValidity();
 	if (is_confirm) {
+		btn_update_student.disabled = true;
 		for (const input of student_total_inputs) {
 			input_population[input.name] = input.value;
 		}
@@ -1699,6 +1702,7 @@ async function btn_update_student_clicked(e) {
 			week_text_spans[1].innerText = "";
 
 			selected_weeks.click();
+			btn_update_student.disabled = false;
 
 			await swal({
 				title: "Success!",
@@ -1746,6 +1750,7 @@ async function update_admin_clicked(e) {
 	e.preventDefault();
 	const is_valid = change_password_form.reportValidity();
 	if (is_valid) {
+		update_admin.disabled = true;
 		const user = {
 			username: user_email,
 			old_password: admin_old_password.value,
@@ -1763,6 +1768,7 @@ async function update_admin_clicked(e) {
 			admin_password.value = "";
 			admin_repeat_password.value = "";
 			edit_target = "";
+			update_admin.disabled = false;
 			await swal({
 				title: "Success!",
 				text: "Admin update successful",
@@ -3893,4 +3899,10 @@ function init_months_weeks() {
 			"start";
 	}
 	btn_sign_out.classList.remove("hidden");
+	
+	const weeks_contents = document.querySelectorAll(".weeks-contents > span");
+	weeks_contents.forEach((week_content) => {
+		week_content.addEventListener("click", weeks_contents_clicked);
+	});
+	selected_weeks = weeks_contents[weeks_contents.length - 1];
 })();
