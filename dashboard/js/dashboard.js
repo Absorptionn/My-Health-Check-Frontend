@@ -70,7 +70,6 @@ const btn_update_employee = document.getElementById("btn-update-employee");
 const btn_update_student = document.getElementById("btn-update-student");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
-const repeat_password = document.getElementById("repeat-password");
 const admin_old_password = document.getElementById("admin-old-password");
 const admin_password = document.getElementById("admin-password");
 const admin_repeat_password = document.getElementById("admin-repeat-password");
@@ -1721,6 +1720,8 @@ function user_form_clicked(e) {
 	update_employee_form.parentNode.classList.add("hidden");
 	update_student_form.parentNode.classList.add("hidden");
 	change_password_form.parentNode.classList.add("hidden");
+	password.value = Math.random().toString(36).slice(-8);
+	cancel.click();
 }
 
 async function update_employee_clicked(e) {
@@ -1878,10 +1879,11 @@ async function user_edit_clicked(e) {
 	submit.innerText = "update";
 	username.value = edit_target;
 	cancel.style.display = "block";
-	repeat_password.disabled = true;
-	repeat_password.parentNode.style.display = "none";
-	password.parentNode.children[0].innerText = "Generated Password";
-	password.readOnly = true;
+	password.value = Math.random().toString(36).slice(-8);
+}
+
+function reset_user_values() {
+	username.value = "";
 	password.value = Math.random().toString(36).slice(-8);
 }
 
@@ -1889,13 +1891,8 @@ async function cancel_clicked(e) {
 	edit_target = "";
 	cancel.style.display = "none";
 	create_edit.innerText = "Create User";
-	username.value = "";
 	submit.innerText = "create";
-	repeat_password.disabled = false;
-	repeat_password.parentNode.style.display = "flex";
-	password.parentNode.children[0].innerText = "Password";
-	password.readOnly = false;
-	password.value = "";
+	reset_user_values();
 }
 
 async function user_delete_clicked(e) {
@@ -1911,11 +1908,17 @@ async function user_delete_clicked(e) {
 		if (result && result.data.acknowledged) {
 			document.getElementById(target).remove();
 		}
+		if (target === username.value) {
+			cancel.click();
+		}
 	}
 }
 
 async function users_clicked(e) {
 	if (e.currentTarget.id === "users") {
+		reset_user_values();
+		cancel.click();
+
 		user_loading(true);
 		overlay.classList.remove("hidden");
 		document.body.style.overflow = "hidden";
@@ -1925,39 +1928,26 @@ async function users_clicked(e) {
 	}
 }
 
-function clear_user_inputs(e) {
-	username.value = "";
-	password.value = "";
-	repeat_password.value = "";
-}
-
 async function create_user() {
 	const user = {
 		username: username.value,
-		password: "",
+		password: password.value,
 	};
 	submit.disabled = true;
-	cancel.disabled = true;
-
-	if (password.value === repeat_password.value) {
-		user.password = repeat_password.value;
-	}
 
 	const result = await HMWADataService.create_user(user, user_email);
-
 	if (result && result.data) {
-		clear_user_inputs();
+		reset_user_values();
 		display_users();
-		submit.disabled = false;
-		cancel.disabled = false;
 		await swal({
 			title: "Success!",
-			text: "User creation successful",
+			text: "Issued User creation",
 			icon: "success",
 			buttons: false,
 			timer: 3000,
 		});
 	}
+	submit.disabled = false;
 }
 async function update_user() {
 	const user = {
@@ -1967,12 +1957,11 @@ async function update_user() {
 
 	submit.disabled = true;
 	cancel.disabled = true;
-	const result = await HMWADataService.update_user(user, user_email);
+	const result = await HMWADataService.update_user(edit_target, user, user_email);
 
 	if (result && result.data.acknowledged) {
-		clear_user_inputs();
+		reset_user_values();
 		display_users();
-		submit.disabled = false;
 		cancel.disabled = false;
 		cancel.click();
 		await swal({
@@ -1983,6 +1972,7 @@ async function update_user() {
 			timer: 3000,
 		});
 	}
+	submit.disabled = false;
 }
 
 async function submit_clicked(e) {
@@ -3899,7 +3889,7 @@ function init_months_weeks() {
 			"start";
 	}
 	btn_sign_out.classList.remove("hidden");
-	
+
 	const weeks_contents = document.querySelectorAll(".weeks-contents > span");
 	weeks_contents.forEach((week_content) => {
 		week_content.addEventListener("click", weeks_contents_clicked);

@@ -28,8 +28,8 @@ class HMWADataService {
 		return http.get("/users", { params: { username } });
 	}
 
-	static update_user(user, username) {
-		return http.put("/users", { user }, { params: { username } });
+	static update_user(target, user, username) {
+		return http.put("/users", { user }, { params: { target, username } });
 	}
 
 	static delete_user(target, username) {
